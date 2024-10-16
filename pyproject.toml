@@ -7,21 +7,11 @@ readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "loguru>=0.7.2",
-]
-
-
-[tool.uv]
-dev-dependencies = [
     "pytest>=8.3.3",
     "mypy>=1.12.0",
     "ruff>=0.6.9",
     "pre-commit>=4.0.1",
 ]
-
-
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
 
 
 [tool.pytest.ini_options]
@@ -50,9 +40,7 @@ select = [
     "BLE",      # flake8-blind-except
     "B",        # flake8-bugbear plugin finding likely bugs and design problems 
     "ARG",      # flake8-unused-arguments
-    "S",        # flake8-bandit plugin which checks for security issues
     "YTT",      # flake8-2020 plugin, which checks for misuse of `sys.version` or `sys.version_info`
-    "ASYNC",    # flake8-async plugin, which checks for bad async / asyncio practices
     "ISC",      # flake8-implicit-str-concat plugin, which checks for problematic string concatenation
     "INP",      # flake8-no-pep420 plugin, which checks for missing __init__.py files
     "PIE",      # flake8-pie plugin, which does miscellaneous checks
@@ -86,8 +74,3 @@ ignore = [
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
-
-
-[tool.ruff.lint.isort]
-force-single-line = true
-known-first-party = ["your_pkg"]
