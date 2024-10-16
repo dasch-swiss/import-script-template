@@ -13,12 +13,8 @@
     "python.testing.pytestArgs": [
         "."
     ],
-    "python.testing.unittestEnabled": false,
+    "python.testing.unittestEnabled": true,
     "python.testing.pytestEnabled": true,
-    "githubPullRequests.ignoredPullRequestBranches": [
-        "main"
-    ],
-    "autoDocstring.docstringFormat": "google-notypes",
     "autoDocstring.startOnNewLine": true,
     "editor.unicodeHighlight.ambiguousCharacters": true,
 }
