@@ -1,0 +1,93 @@
+[project]
+name = "your-pkg"
+version = "0.1.0"
+description = "Add a description here"
+authors = [{name = "Johannes Nussbaum", email = "johannes.nussbaum@dasch.swiss"}]
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "loguru>=0.7.2",
+]
+
+
+[tool.uv]
+dev-dependencies = [
+    "pytest>=8.3.3",
+    "mypy>=1.12.0",
+    "ruff>=0.6.9",
+    "pre-commit>=4.0.1",
+]
+
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+
+[tool.pytest.ini_options]
+addopts = ["--import-mode=importlib"]
+# see https://docs.pytest.org/en/latest/explanation/goodpractices.html#tests-outside-application-code
+
+
+[tool.mypy]
+show_column_numbers = true
+strict = true
+enable_error_code = ["possibly-undefined"]
+
+
+[tool.ruff]
+line-length = 120
+
+
+[tool.ruff.lint]
+select = [
+    "RUF",      # ruff-specific rules
+    "PL",       # pylint
+    "I",        # isort
+    "E",        # pycodestyle errors
+    "F",        # pyflakes
+    "A",        # flake8-builtins
+    "BLE",      # flake8-blind-except
+    "B",        # flake8-bugbear plugin finding likely bugs and design problems 
+    "ARG",      # flake8-unused-arguments
+    "S",        # flake8-bandit plugin which checks for security issues
+    "YTT",      # flake8-2020 plugin, which checks for misuse of `sys.version` or `sys.version_info`
+    "ASYNC",    # flake8-async plugin, which checks for bad async / asyncio practices
+    "ISC",      # flake8-implicit-str-concat plugin, which checks for problematic string concatenation
+    "INP",      # flake8-no-pep420 plugin, which checks for missing __init__.py files
+    "PIE",      # flake8-pie plugin, which does miscellaneous checks
+    "PT",       # flake8-pytest-style plugin
+    "TID",      # flake8-tidy-imports plugin
+    "ICN",      # flake8-import-conventions plugin, which checks for import conventions
+    "ARG",      # flake8-unused-arguments
+    "FBT",      # flake8-boolean-trap plugin which checks for boolean positional arguments
+    "SIM",      # flake8-simplify plugin which checks for simplifiable statements
+    "PTH",      # flake8-use-pathlib plugin which checks for old style usage of os that can be replaced with pathlib
+    "PGH",      # pygrep-hooks: A collection of fast, cheap, regex based pre-commit hooks
+    "UP",       # pyupgrade
+    "C90",      # mccabe
+    "N",        # pep8-naming
+    "PD",       # pandas-vet: checks for common pandas mistakes
+    "TRY",      # tryceratops: Prevent Exception Handling AntiPatterns
+    "PERF",     # perflint: A Linter for performance anti-patterns
+    "FURB",     # refurb: A tool for refurbish and modernize Python codebases
+]
+ignore = [
+    "ISC001",   # flake8-implicit-str-concat: single-line-implicit-string-concatenation  # incompatible with the formatter
+    "S603",     # flake8-bandit: subprocess-without-shell-equals-true
+]
+
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = [
+    "S101",     # flake8-bandit: use of assert
+]
+
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+
+[tool.ruff.lint.isort]
+force-single-line = true
+known-first-party = ["your_pkg"]
