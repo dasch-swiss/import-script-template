@@ -14,5 +14,6 @@
         "charliermarsh.ruff",
         "sourcery.sourcery",
         "qcz.text-power-tools",
+        "tamasfe.even-better-toml",
     ]
 }

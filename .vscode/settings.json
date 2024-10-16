@@ -17,5 +17,6 @@
     "python.testing.pytestEnabled": true,
     "autoDocstring.startOnNewLine": true,
     "editor.unicodeHighlight.ambiguousCharacters": true,
+    "editor.formatOnSave": true,
 }
 
