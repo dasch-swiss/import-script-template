@@ -18,5 +18,5 @@
     "autoDocstring.startOnNewLine": true,
     "editor.unicodeHighlight.ambiguousCharacters": true,
     "editor.formatOnSave": true,
+    "mypy.runUsingActiveInterpreter": true,
 }
-
