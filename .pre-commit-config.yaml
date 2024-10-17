@@ -14,3 +14,4 @@ repos:
         args: ['--maxkb=5000']
       - id: check-merge-conflict
       - id: detect-private-key
+      - id: check-case-conflict
