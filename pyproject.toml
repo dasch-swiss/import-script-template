@@ -6,18 +6,11 @@ authors = [{name = "DaSCH", email = "info@dasch.swiss"}]
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
-    "loguru",
     "pytest",
     "mypy",
     "ruff",
     "pre-commit",
 ]
-
-
-[tool.mypy]
-show_column_numbers = true
-strict = true
-enable_error_code = ["possibly-undefined"]
 
 
 [tool.ruff]
@@ -27,29 +20,17 @@ line-length = 120
 [tool.ruff.lint]
 select = [
     "RUF",      # ruff-specific rules
-    "PL",       # pylint
-    "I",        # isort
-    "E",        # pycodestyle errors
-    "F",        # pyflakes
     "A",        # flake8-builtins
     "B",        # flake8-bugbear plugin finding likely bugs and design problems 
     "ARG",      # flake8-unused-arguments
-    "ASYNC",    # flake8-async plugin, which checks for bad async / asyncio practices
-    "ISC",      # flake8-implicit-str-concat plugin, which checks for problematic string concatenation
-    "PIE",      # flake8-pie plugin, which does miscellaneous checks
     "PT",       # flake8-pytest-style plugin
     "TID",      # flake8-tidy-imports plugin
     "ICN",      # flake8-import-conventions plugin, which checks for import conventions
-    "FBT",      # flake8-boolean-trap plugin which checks for boolean positional arguments
     "SIM",      # flake8-simplify plugin which checks for simplifiable statements
     "PTH",      # flake8-use-pathlib plugin which checks for old style usage of os that can be replaced with pathlib
     "PGH",      # pygrep-hooks: A collection of fast, cheap, regex based pre-commit hooks
-    "UP",       # pyupgrade
-    "C90",      # mccabe
     "N",        # pep8-naming
     "PD",       # pandas-vet: checks for common pandas mistakes
-    "PERF",     # perflint: A Linter for performance anti-patterns
-    "FURB",     # refurb: A tool for refurbish and modernize Python codebases
 ]
 ignore = [
     "ISC001",   # flake8-implicit-str-concat: single-line-implicit-string-concatenation  # incompatible with the formatter

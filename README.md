@@ -7,6 +7,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 uv sync
 source .venv/bin/activate
 pre-commit install
+brew install just
 ```
 
 
@@ -22,22 +23,22 @@ python -m src.main
 Check your type hints:
 
 ```bash
-mypy .
+just type-check
 ```
 
 Auto-format your code:
 
 ```bash
-ruff format .
+just format
 ```
 
 Check if there are linting erros:
 
 ```bash
-ruff check .
+just lint
 ```
 
-Run the unit tests and e2e tests:
+Run the tests:
 
 ```bash
 pytest
