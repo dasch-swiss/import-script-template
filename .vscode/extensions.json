@@ -1,19 +1,18 @@
 {
-    "recommendations": [
-        "ms-python.python",
-        "ms-python.vscode-pylance",
-        "ms-python.debugpy",
-        "visualstudioexptteam.vscodeintellicode",
-        "njpwerner.autodocstring",
-        "redhat.vscode-xml",
-        "zainchen.json",
-        "grapecity.gc-excelviewer",
-        "mechatroner.rainbow-csv",
-        "eamodio.gitlens",
-        "matangover.mypy",
-        "charliermarsh.ruff",
-        "sourcery.sourcery",
-        "qcz.text-power-tools",
-        "tamasfe.even-better-toml",
-    ]
+	"recommendations": [
+		"ms-python.python",
+		"ms-python.vscode-pylance",
+		"ms-python.debugpy",
+		"ms-python.vscode-python-envs",
+		"visualstudioexptteam.vscodeintellicode",
+		"njpwerner.autodocstring",
+		"redhat.vscode-xml",
+		"zainchen.json",
+		"grapecity.gc-excelviewer",
+		"mechatroner.rainbow-csv",
+		"eamodio.gitlens",
+		"matangover.mypy",
+		"charliermarsh.ruff",
+		"qcz.text-power-tools",
+	]
 }
