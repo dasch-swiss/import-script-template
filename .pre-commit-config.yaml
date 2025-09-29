@@ -1,17 +1,11 @@
 # Configuration of https://pre-commit.com/
 
 repos:
-
-  # - repo: https://github.com/astral-sh/ruff-pre-commit
-  #   rev: v0.6.9
-  #   hooks:
-  #     - id: ruff-format
-
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
       - id: check-added-large-files
-        args: ['--maxkb=5000']
+        args: ['--maxkb=10000']
       - id: check-merge-conflict
       - id: detect-private-key
       - id: check-case-conflict

@@ -13,10 +13,7 @@
     "python.testing.pytestArgs": [
         "."
     ],
-    "python.testing.unittestEnabled": true,
+    "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
-    "autoDocstring.startOnNewLine": true,
-    "editor.unicodeHighlight.ambiguousCharacters": true,
-    "editor.formatOnSave": true,
-    "mypy.runUsingActiveInterpreter": true,
 }
+

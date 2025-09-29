@@ -15,8 +15,11 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
-      - name: Install uv, python, and dependencies
-        uses: ./.github/actions/setup
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+      - name: Install Python dependencies
+        run: uv sync --all-extras --dev
+        shell: bash
       - name: Linting with ruff
         run: uv run ruff check . --output-format=github
       - name: Check formatting with ruff
@@ -29,7 +32,10 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
-      - name: Install uv, python, and dependencies
-        uses: ./.github/actions/setup
-      - name: unittests
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+      - name: Install Python dependencies
+        run: uv sync --all-extras --dev
+        shell: bash
+      - name: run tests
         run: uv run pytest tests/
