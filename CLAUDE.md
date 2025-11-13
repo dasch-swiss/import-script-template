@@ -42,6 +42,10 @@ Please carefully read the following documentations, they are crucial in order to
     - <https://docs.dasch.swiss/latest/DSP-TOOLS/data-model/json-project/caveats/>
 - Documentation of the XML file format: <https://docs.dasch.swiss/latest/DSP-TOOLS/data-file/xml-data-file/>
 
+The `xmllib` validates a lot of the input. The diagnostic results it saves in the csv. 
+There is no need to duplicate the validation.
+- TODO: include what it validates look at the code
+
 ## Project Structure
 
 ```
