@@ -95,6 +95,35 @@ All validation warnings are saved to `xmllib_warnings.csv` in the project root d
 └── xmllib_warnings.csv  # Generated warnings from xmllib (created in project root)
 ```
 
+## Reference Examples
+
+A repository of demonstration import scripts is available at: <https://github.com/dasch-swiss/daschland-scripts/>
+
+**Important Guidelines:**
+
+1. **Use as reference only** - These examples show real-world implementations but **vary in structure**
+2. **CLAUDE.md is authoritative** - When there's a conflict between examples and this document, **always follow this CLAUDE.md**
+3. **Examples may be outdated** - Some scripts may use older patterns or project-specific approaches
+4. **Structure variations** - Not all examples follow the exact structure defined in "Project Structure" above
+
+**When to consult the examples:**
+
+- **Data transformation patterns** - See how complex data cleaning is handled (e.g., date parsing, string normalization)
+- **Edge case handling** - Learn how others dealt with missing values, malformed data, or special characters
+- **List lookups** - See practical examples of mapping source data to list nodes
+- **Link resolution** - Understand how to handle references between resources across different classes
+- **File handling** - See how file paths and IIIF URIs are processed in practice
+
+**When NOT to follow the examples:**
+
+- If an example uses a different folder structure than defined above
+- If an example doesn't use the `ListLookup` class (older approach)
+- If an example manually validates data that xmllib now validates automatically
+- If an example modifies source data files (violates our directives)
+
+**Best practice:** Use examples to understand **data handling logic**, 
+but implement using the **patterns and structure defined in this CLAUDE.md**.
+
 ## Workflow
 
 **Important Directives:**
