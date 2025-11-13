@@ -234,3 +234,12 @@ Run the tests:
 ```bash
 pytest
 ```
+
+## Troubleshooting
+
+If something doesn't work, check the following:
+
+- Run `pwd` to check if you are at the root of the repository.
+  If you're in a subfolder, your terminal commands might fail.
+- Activate the virtual environment with `source .venv/bin/activate`
+- Reinstall the virtual environment with `rm -rf .venv; uv sync; source .venv/bin/activate`
