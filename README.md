@@ -8,6 +8,7 @@ uv sync
 source .venv/bin/activate
 pre-commit install
 brew install just
+echo XMLLIB_WARNINGS_CSV_SAVEPATH="xmllib_warnings.csv" >> .env
 ```
 
 
