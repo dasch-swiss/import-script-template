@@ -53,7 +53,8 @@ Please carefully read the following documentations, they are crucial in order to
 │   └── <class_name>_plan.md
 ├── src/
 │   ├── utils/
-│   │   └── some_util.py  # Shared functions across multiple import scripts
+│   │   ├── some_util.py  # Shared functions across multiple import scripts
+│   │   └── resource_ids.py  # Shared functions that creates resource ids
 │   └── import-scripts/
 │       ├── main.py       # Main entry point that calls all import functions
 │       └── import_<class_name>.py  # xmllib code for each resource class
@@ -79,8 +80,7 @@ Analyze the JSON data model to determine the correct order for importing resourc
 
 1. **Identify all resource classes** in the JSON project file
 2. **Identify link dependencies** for each class:
-    - A class has a dependency if it has a cardinality with a property that has `hasLinkTo` or `isPartOf` as
-      super-property
+    - A class has a dependency if it has a cardinality with a property that has `hasLinkTo`, `hasRepresentation`, or `isPartOf` as super-property
     - Note which class(es) it links to (the `object` field of the property)
 3. **Create dependency graph**: Class A must be imported before Class B if B links to A
 4. **Perform topological sort** to determine valid import order:
@@ -231,8 +231,19 @@ def main() -> None:
     root.write_file("data/output/data_<project-shortname>.xml")
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
     main()
+```
+
+Create: `src.utils.resource_ids.py`
+
+```python
+from dsp_tools import xmllib
+
+def make_<class_name>_id(input_id) -> str:
+    # some transformations
+    new_id = f"<class_name>_{input_id}"
+    return xmllib.make_xsd_compatible_id(new_id)
 ```
 
 ### For Each New Class
@@ -261,7 +272,7 @@ def main(list_lookup: xmllib.ListLookup) -> list[xmllib.Resource]:
     return all_resources
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
     # For standalone testing
     list_lookup = xmllib.ListLookup.create_new("project_json.json", language_of_label="en", default_ontology="daschland")
     resources = main(list_lookup)
@@ -292,7 +303,7 @@ def main() -> None:
     root.write_file("data/output/data_<project-shortname>.xml")
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
     main()
 ```
 
@@ -424,6 +435,76 @@ resource = xmllib.Resource.create_new(
 - `restype`: `:` + resource class name (from JSON `resource["name"]`)
 - `label`: The display label for the resource (from your data)
 
+### Resource ID Generation Strategies
+
+The `res_id` parameter must be a **unique identifier** for each resource. This ID is used for:
+- Ask the user how these should be constructed
+- Always create a util function in `src.utils.resource_ids.py` so that it will be used consistently
+- Internal references (e.g., when one resource links to another)
+- xmllib tracks the resource IDs and warns if duplicates are created you do not need to do that manually
+- Debugging and tracking during import
+
+**Common strategies:**
+
+1. **Use existing IDs from source data** (recommended when available):
+   ```python
+   res_id = f"person_{row['PersonID']}"  # e.g., "person_12345"
+   ```
+   - Most reliable approach
+   - Maintains traceability to source data
+   - Easier debugging
+
+2. **Generate from unique natural keys**:
+   ```python
+   # Combine multiple fields to create unique identifier
+   res_id = f"book_{author_slug}_{year}_{title_slug}"
+   ```
+   - Useful when no single ID field exists
+   - Must ensure combination is truly unique
+   - Validate uniqueness before using
+
+3. **Use UUIDs** (when no natural key exists):
+   ```python
+   res_id = `xmllib.make_xsd_compatible_id_with_uuid("book_id")`
+   ```
+
+4. **Sequential numbering**:
+   ```python
+   res_id = f"document_{index:05d}"  # e.g., "document_00001"
+   ```
+   - Simple and predictable
+   - Order-dependent (fragile if source data changes)
+   - Only use for resources that have inherent ordering
+
+**Best practices:**
+
+- **Always include a prefix** that identifies the resource class: `person_123`, not just `123`
+- **Handle special characters**: `xmllib.make_xsd_compatible_id()`
+- **Document your strategy**: Add comments explaining how IDs are generated
+- **Be consistent**: Create a function that constructs the ID so that it will be done consistently.
+
+**Example implementation:**
+
+```python
+from src.utils.resource_ids import make_person_id
+
+def create_person_resources(data: list[dict]) -> list[xmllib.Resource]:
+    all_resources = []
+    for row in data:
+        # Generate ID from source data
+        original_id = row['PersonID']
+        res_id = make_person_id(original_id)
+
+        # Create resource
+        resource = xmllib.Resource.create_new(
+            res_id=res_id,
+            restype=":Person",
+            label=row['FullName']
+        )
+        all_resources.append(resource)
+    return all_resources
+```
+
 ## Property-Type to xmllib Method Mapping
 
 This table shows how JSON property definitions map to xmllib methods:
@@ -544,9 +625,91 @@ resource = resource.add_geoname_multiple(
 
 ## Working with Lists
 
-Lists are controlled vocabularies defined in the JSON project.
-The xmllib provides a lookup that can be used: https://docs.dasch.swiss/latest/DSP-TOOLS/xmllib-docs/general-functions/#xmllib.general_functions.ListLookup
-When creating the lookup ask the user which language for the label should be used.
+Lists are controlled vocabularies defined in the JSON project. 
+They provide predefined options for properties with `ListValue` as their object type.
+
+**From JSON list definition:**
+
+```json
+{
+    "lists": [
+        {
+            "name": "colors",
+            "labels": {
+                "en": "Color Options"
+            },
+            "nodes": [
+                {
+                    "name": "red",
+                    "labels": {"en": "Red"}
+                },
+                {
+                    "name": "green",
+                    "labels": {"en": "Green"}
+                },
+                {
+                    "name": "blue",
+                    "labels": {"en": "Blue"}
+                }
+            ]
+        }
+    ]
+}
+```
+
+**Property using this list:**
+
+```json
+{
+    "name": "hasColor",
+    "super": ["hasValue"],
+    "object": "ListValue",
+    "labels": {"en": "Color"},
+    "gui_element": "List",
+    "gui_attributes": {
+        "hlist": "colors"
+    }
+}
+```
+
+**To xmllib:**
+
+The xmllib provides a `ListLookup` class that translates list node names or labels to their IRI representations.
+
+```python
+# Create the list lookup (ask user which language to use)
+list_lookup = xmllib.ListLookup.create_new(
+    "project_json.json",
+    language_of_label="en",  # Language for label matching
+    default_ontology="daschland"
+)
+
+# Option 1: Look up by node name
+color_iri = list_lookup.get_list_node_id(
+    list_name="colors",
+    node_name="red"  # Exact node name from JSON
+)
+
+# Option 2: Look up by label
+color_iri = list_lookup.get_list_node_id_by_label(
+    list_name="colors",
+    label="Red"  # Label in the specified language
+)
+
+# Add to resource
+resource = resource.add_list(
+    prop_name=":hasColor",
+    value=color_iri
+)
+```
+
+**Key Points:**
+
+- Always create the `ListLookup` once and pass it to all import functions
+- Use `get_list_node_id()` for node names, `get_list_node_id_by_label()` for labels
+- The lookup returns an IRI string that can be used directly in `add_list()`
+
+**More details:** https://docs.dasch.swiss/latest/DSP-TOOLS/xmllib-docs/general-functions/#xmllib.general_functions.ListLookup
 
 
 ## Working with Multiple Ontologies
@@ -669,8 +832,11 @@ and https://docs.dasch.swiss/latest/DSP-TOOLS/xmllib-docs/resource/#xmllib.Resou
 
 ### isPartOf
 
-Indicates that a resource is part of another resource.
-It requires a seqnum property as well.
+Indicates that a resource is part of another resource (e.g., a page is part of a book, a chapter is part of a document).
+
+**When to use seqnum with isPartOf:**
+- If the child resources have a specific order (e.g., pages in a book), you **must** also use a `seqnum` property
+- If the child resources have no inherent order (e.g., images attached to an article), `seqnum` is not required
 
 **From JSON:**
 
@@ -699,7 +865,12 @@ resource = resource.add_link(
 ### seqnum (Sequence Numbers)
 
 Used to define the order of resources that are part of another resource.
-Requires isPartOf.
+Typically used **together with `isPartOf`** to establish sequence (e.g., page 1, page 2, page 3 of a book).
+
+**Important:**
+- `seqnum` values should be integers (1, 2, 3, ...)
+- Each child resource of the same parent should have a unique sequence number
+- Sequence numbers define the order for display and navigation in DSP-APP
 
 **From JSON:**
 
