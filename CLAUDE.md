@@ -224,7 +224,8 @@ def main() -> None:
     )
     
     # create a list lookup that can be used for all resources
-    list_lookup = xmllib.ListLookup.create_new("project_json.json", language_of_label="user-input", default_ontology="daschland") 
+    # Ask user which language to use for labels (e.g., "en", "de", "fr")
+    list_lookup = xmllib.ListLookup.create_new("project_json.json", language_of_label="en", default_ontology="daschland")
     # Import all resources (will be added as classes are implemented)
     # Write the root to an XML file
     root.write_file("data/output/data_<project-shortname>.xml")
@@ -262,7 +263,8 @@ def main(list_lookup: xmllib.ListLookup) -> list[xmllib.Resource]:
 
 if __name__=="__main__":
     # For standalone testing
-    resources = main()
+    list_lookup = xmllib.ListLookup.create_new("project_json.json", language_of_label="en", default_ontology="daschland")
+    resources = main(list_lookup)
     print(f"Created {len(resources)} resources")
 ```
 
@@ -270,7 +272,7 @@ if __name__=="__main__":
 
 ```python
 from dsp_tools import xmllib
-from src.import_scripts import import_ < class_name >
+from src.import_scripts import import_<class_name>
 
 
 def main() -> None:
@@ -280,10 +282,11 @@ def main() -> None:
         default_ontology="daschland"
     )
     # create a list lookup that can be used for all resources
-    list_lookup = xmllib.ListLookup.create_new("project_json.json", language_of_label="user-input", default_ontology="daschland") 
+    # Ask user which language to use for labels (e.g., "en", "de", "fr")
+    list_lookup = xmllib.ListLookup.create_new("project_json.json", language_of_label="en", default_ontology="daschland")
     # Import all resources
-    all_ < class_name > = import_ < class_name >.main()
-    root.add_resource_multiple(all_ < class_name >)
+    all_<class_name> = import_<class_name>.main(list_lookup)
+    root.add_resource_multiple(all_<class_name>)
 
     # Write the root to an XML file
     root.write_file("data/output/data_<project-shortname>.xml")
@@ -578,20 +581,10 @@ When your project has multiple ontologies, properties may need prefixes.
                     "cardinalities": [
                         {
                             "propname": ":testBoolean",
-                            #
-                            Property
-                            from
-                            same
-                            ontology
                             "cardinality": "0-1"
                         },
                         {
                             "propname": "onto:testSimpleText",
-                            #
-                            Property
-                            from
-                            other
-                            ontology
                             "cardinality": "0-n"
                         }
                     ]
@@ -601,6 +594,10 @@ When your project has multiple ontologies, properties may need prefixes.
     ]
 }
 ```
+
+**Note:** In the example above:
+- `:testBoolean` is a property from the same ontology (second-onto)
+- `onto:testSimpleText` is a property from a different ontology (onto)
 
 **To xmllib:**
 
@@ -751,17 +748,17 @@ Your ontology can define sub-properties of these.
     "cardinalities": [
         {
             "propname": "isPartOf",
-            // Built-in, no prefix
             "cardinality": "0-n"
         },
         {
             "propname": "seqnum",
-            // Built-in, no prefix
             "cardinality": "0-1"
         }
     ]
 }
 ```
+
+**Note:** Both `isPartOf` and `seqnum` are built-in properties with no prefix needed.
 
 **To xmllib:**
 
@@ -797,7 +794,6 @@ resource = resource.add_integer(
         {
             "name": "SubClassOfResourceNoGuiOrder",
             "super": ":ResourceNoGuiOrder",
-            // Inherits from custom class
             "cardinalities": [
                 {
                     "propname": ":testSimpleText",
@@ -808,6 +804,8 @@ resource = resource.add_integer(
     ]
 }
 ```
+
+**Note:** `SubClassOfResourceNoGuiOrder` inherits from the custom class `ResourceNoGuiOrder` and will inherit all its cardinalities.
 
 **To xmllib:**
 
