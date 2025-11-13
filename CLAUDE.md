@@ -83,13 +83,13 @@ All validation warnings are saved to `xmllib_warnings.csv` in the project root d
 ├── data/
 │   ├── input/           # Original data files (CSV, Excel, etc.)
 │   └── output/          # Generated XML files
-├── claude-planning/     # Planning documents for each class
+├── claude_planning/     # Planning documents for each class
 │   └── <class_name>_plan.md
 ├── src/
 │   ├── utils/
 │   │   ├── some_util.py  # Shared functions across multiple import scripts
 │   │   └── resource_ids.py  # Shared functions that creates resource ids
-│   └── import-scripts/
+│   └── import_scripts/
 │       ├── main.py       # Main entry point that calls all import functions
 │       └── import_<class_name>.py  # xmllib code for each resource class
 └── xmllib_warnings.csv  # Generated warnings from xmllib (created in project root)
@@ -122,7 +122,7 @@ Analyze the JSON data model to determine the correct order for importing resourc
     - Then classes that only link to previously processed classes
     - Continue until all classes are ordered
 5. **Check for circular dependencies**: If found, alert the user immediately
-6. **Save Order**: Save the order at `claude-planning/class_todo_list.md`
+6. **Save Order**: Save the order at `claude_planning/class_todo_list.md`
 
 **Example:**
 
@@ -152,7 +152,7 @@ For each class in the import order, use the AskUserQuestion tool to gather infor
 
 ### Step 4: Create Planning Document
 
-Create a detailed planning document at `claude-planning/<class_name>_plan.md` that includes:
+Create a detailed planning document at `claude_planning/<class_name>_plan.md` that includes:
 
 1. **Class overview**: Name, super class, description
 2. **Data source mapping**: File paths and formats
@@ -230,7 +230,7 @@ After completing implementation for one resource class, validate it through the 
 
 **If all validation steps pass:**
 
-- Mark the class as completed in your todo list `claude-planning/class_todo_list.md`
+- Mark the class as completed in your todo list `claude_planning/class_todo_list.md`
 - Proceed to the next resource class in the import order
 - Update the main.py to include the new class
 
@@ -244,7 +244,7 @@ After completing implementation for one resource class, validate it through the 
 
 ### Initial Setup (First Class)
 
-Create: `src/import-scripts/main.py`
+Create: `src/import_scripts/main.py`
 
 ```python
 from dsp_tools import xmllib
@@ -282,7 +282,7 @@ def make_<class_name>_id(input_id) -> str:
 
 ### For Each New Class
 
-**1. Create new file:** `src/import-scripts/import_<class_name>.py`
+**1. Create new file:** `src/import_scripts/import_<class_name>.py`
 
 ```python
 from dsp_tools import xmllib
@@ -313,7 +313,7 @@ if __name__ == "__main__":
     print(f"Created {len(resources)} resources")
 ```
 
-**2. Update:** `src/import-scripts/main.py`
+**2. Update:** `src/import_scripts/main.py`
 
 ```python
 from dsp_tools import xmllib
