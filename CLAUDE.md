@@ -499,7 +499,7 @@ The `res_id` parameter must be a **unique identifier** for each resource. This I
 
 3. **Use UUIDs** (when no natural key exists):
    ```python
-   res_id = `xmllib.make_xsd_compatible_id_with_uuid("book_id")`
+   res_id = xmllib.make_xsd_compatible_id_with_uuid("book_id")
    ```
 
 4. **Sequential numbering**:
