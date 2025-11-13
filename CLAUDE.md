@@ -42,9 +42,39 @@ Please carefully read the following documentations, they are crucial in order to
     - <https://docs.dasch.swiss/latest/DSP-TOOLS/data-model/json-project/caveats/>
 - Documentation of the XML file format: <https://docs.dasch.swiss/latest/DSP-TOOLS/data-file/xml-data-file/>
 
-The `xmllib` validates a lot of the input. The diagnostic results it saves in the csv. 
-There is no need to duplicate the validation.
-- TODO: include what it validates look at the code
+The `xmllib` validates a lot of the input automatically. The diagnostic results are saved in `xmllib_warnings.csv`.
+**There is no need to duplicate these validations in your import scripts.**
+
+**What xmllib validates automatically:**
+
+1. **Data Type Validation** - Checks if values match expected types and emits warnings if type mismatches occur:
+    - **Boolean**: Converts various formats (yes/no, ja/nein, oui/non, true/false, 1/0) and warns if invalid
+    - **Color**: Validates hex color format (e.g., `#FF0000`)
+    - **Date**: Validates DSP date format (`CALENDAR:ERA:DATE` or `ERA:DATE` or `DATE`)
+    - **Decimal**: Checks for valid floating point numbers
+    - **Geoname**: Validates geoname IDs
+    - **Integer**: Checks for valid integers
+    - **Link**: Validates xsd:ID or DSP resource IRI format
+    - **List**: Validates list name and node name are non-empty
+    - **Timestamp**: Validates timestamp format
+    - **URI**: Checks for valid URI format
+
+2. **Empty/None Value Detection** - Automatically detects and handles:
+    - `None`, `pd.NA`, empty strings, whitespace-only strings
+    - Empty collections (lists, tuples, sets, dictionaries)
+
+3. **Resource ID Validation**:
+    - Checks if resource IDs conform to xsd:ID format (must start with letter or underscore, contain only valid characters)
+    - **Warns about duplicate resource IDs** across all resources
+
+4. **Richtext Syntax Validation** - Validates that richtext:
+    - Is well-formed XML
+    - Has proper standoff markup (links, formatting tags)
+    - Reserved characters (`<`, `>`, `&`) are properly escaped when not part of markup
+
+5. **File Path Validation** - Validates file paths and IIIF URIs
+
+All validation warnings are saved to `xmllib_warnings.csv` in the project root directory with severity levels (INFO, WARNING, ERROR).
 
 ## Project Structure
 
