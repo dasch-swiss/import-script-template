@@ -36,17 +36,11 @@ requirements.
 Please carefully read the following documentations, they are crucial in order to understand the xmllib:
 
 - Documentation of xmllib (see also the subpages): <https://docs.dasch.swiss/latest/DSP-TOOLS/xmllib-docs/overview/>
-- Example scripts - this is the entrypoint:
-  <https://github.com/dasch-swiss/daschland-scripts/blob/main/src/xmllib/xmllib_main.py>
 - Documentation of the JSON file format:
     - <https://docs.dasch.swiss/latest/DSP-TOOLS/data-model/json-project/overview/>
     - <https://docs.dasch.swiss/latest/DSP-TOOLS/data-model/json-project/ontologies/>
     - <https://docs.dasch.swiss/latest/DSP-TOOLS/data-model/json-project/caveats/>
 - Documentation of the XML file format: <https://docs.dasch.swiss/latest/DSP-TOOLS/data-file/xml-data-file/>
-
-**Important:** If you cannot retrieve these documentations, immediately alert the user. Without reading these, you
-cannot proceed with creating import scripts. Wait for the user to provide alternative access to the documentation or
-resolve the connectivity issue.
 
 ## Project Structure
 
@@ -55,7 +49,7 @@ resolve the connectivity issue.
 ├── data/
 │   ├── input/           # Original data files (CSV, Excel, etc.)
 │   └── output/          # Generated XML files
-├── planning/            # Planning documents for each class
+├── claude-planning/     # Planning documents for each class
 │   └── <class_name>_plan.md
 ├── src/
 │   ├── utils/
@@ -94,7 +88,7 @@ Analyze the JSON data model to determine the correct order for importing resourc
     - Then classes that only link to previously processed classes
     - Continue until all classes are ordered
 5. **Check for circular dependencies**: If found, alert the user immediately
-6. **Save Order**: Save the order at `planning/class_todo_list.md`
+6. **Save Order**: Save the order at `claude-planning/class_todo_list.md`
 
 **Example:**
 
@@ -124,7 +118,7 @@ For each class in the import order, use the AskUserQuestion tool to gather infor
 
 ### Step 4: Create Planning Document
 
-Create a detailed planning document at `planning/<class_name>_plan.md` that includes:
+Create a detailed planning document at `claude-planning/<class_name>_plan.md` that includes:
 
 1. **Class overview**: Name, super class, description
 2. **Data source mapping**: File paths and formats
@@ -202,7 +196,7 @@ After completing implementation for one resource class, validate it through the 
 
 **If all validation steps pass:**
 
-- Mark the class as completed in your todo list `planning/class_todo_list.md`
+- Mark the class as completed in your todo list `claude-planning/class_todo_list.md`
 - Proceed to the next resource class in the import order
 - Update the main.py to include the new class
 
