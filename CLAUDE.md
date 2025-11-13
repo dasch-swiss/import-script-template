@@ -688,30 +688,26 @@ list_lookup = xmllib.ListLookup.create_new(
     default_ontology="daschland"
 )
 
-# Option 1: Look up by node name
-color_iri = list_lookup.get_list_node_id(
+# Look up by node label
+color_node = list_lookup.get_node_via_list_name(
     list_name="colors",
-    node_name="red"  # Exact node name from JSON
-)
-
-# Option 2: Look up by label
-color_iri = list_lookup.get_list_node_id_by_label(
-    list_name="colors",
-    label="Red"  # Label in the specified language
+    node_label="Red"  # Label in the specified language (capitalisation is not relevant)
 )
 
 # Add to resource
 resource = resource.add_list(
     prop_name=":hasColor",
-    value=color_iri
+    list_name="colors",
+    value=color_node
 )
 ```
 
 **Key Points:**
 
 - Always create the `ListLookup` once and pass it to all import functions
-- Use `get_list_node_id()` for node names, `get_list_node_id_by_label()` for labels
-- The lookup returns an IRI string that can be used directly in `add_list()`
+- Use `get_node_via_list_name()` to look up nodes by their label in the specified language
+- The lookup returns a node name string that can be used in `add_list()` or `add_list_multiple()`
+- When using `add_list()` or `add_list_multiple()`, you must provide both `list_name` and `value` parameters
 
 **More details:** https://docs.dasch.swiss/latest/DSP-TOOLS/xmllib-docs/general-functions/#xmllib.general_functions.ListLookup
 
