@@ -23,10 +23,10 @@ DSP-TOOLS is the command-line interface for the DSP.
   This is a pure restructuring, the information stays the same.
 - **Start local DSP server**: `dsp-tools start-stack --no-prune` spins up a local DSP server,
   for local testing of the JSON and the XML file.
-- **Data Model Creation**: `dsp-tools create` establishes the data model from the JSON file on the DSP server.
+- **Data Model Creation**: `dsp-tools create <project.json>` establishes the data model from the JSON file on the DSP server.
 - **XSD Schema Check**: `dsp-tools xmlupload --validate-only <data.xml>` checks XML schema compliance without uploading.
 - **Validation**: `dsp-tools validate-data <data.xml>` validates the XML data against the data model on the server.
-- **Data Upload**: `dsp-tools xmlupload` populates the project with resources and metadata defined in the XML file.
+- **Data Upload**: `dsp-tools xmlupload <data.xml>` populates the project with resources and metadata defined in the XML file.
 
 ## xmllib
 
