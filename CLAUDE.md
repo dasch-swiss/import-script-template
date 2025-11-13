@@ -94,7 +94,6 @@ If you cannot retrieve these documentations, alert me. Without reading these, th
     - then validate the XML with `dsp-tools validate-data <data.xml>`.
     - If everything is fine, proceed with the next resource class.
 
-
 ## Python Code Set-Up
 
 If you have not created any classes before:
@@ -113,7 +112,7 @@ def main() -> None:
     root.write_file("data/output/data_<project-shortname>.xml")
 
 
-if __name__ == "__main__":
+if __name__=="__main__":
     main()
 ```
 
@@ -128,28 +127,30 @@ def main() -> list[Resource]:
 
     return all_resources
 
-if __name__ == "__main__":
+
+if __name__=="__main__":
     main()
 ```
 
 2. Add to `src/import-scripts/main.py`
 
 ```python
-from src.import_scripts import import_<class_name>
+from src.import_scripts import import_ < class_name >
+
 
 def main() -> None:
     # create the root element dsp-tools
     root = XMLRoot.create_new(shortcode="0854", default_ontology="daschland")
 
     # import all resources
-    all_<class_name> = import_<class_name>.main()
-    root.add_resource_multiple(all_<class_name>)
+    all_ < class_name > = import_ < class_name >.main()
+    root.add_resource_multiple(all_ < class_name >)
 
     # write the root to a xml file
     root.write_file("data/output/data_<project-shortname>.xml")
 
 
-if __name__ == "__main__":
+if __name__=="__main__":
     main()
 ```
 
@@ -291,25 +292,25 @@ resource = xmllib.Resource.create_new(
 
 This table shows how JSON property definitions map to xmllib methods:
 
-| JSON `super`        | JSON `object`              | JSON `gui_element`     | xmllib Method       | Example Value                    |
-|---------------------|----------------------------|------------------------|---------------------|----------------------------------|
-| `hasValue`          | `BooleanValue`             | `Checkbox`             | `.add_bool()`       | `True` or `False`                |
-| `hasColor`          | `ColorValue`               | `Colorpicker`          | `.add_color()`      | `"#FF0000"`                      |
-| `hasValue`          | `DateValue`                | `Date`                 | `.add_date()`       | `"GREGORIAN:CE:2024-01-15"`      |
-| `hasValue`          | `DecimalValue`             | `Spinbox`/`SimpleText` | `.add_decimal()`    | `3.14`                           |
-| `hasValue`          | `GeonameValue`             | `Geonames`             | `.add_geoname()`    | `"2661604"` (geonames.org ID)    |
-| `hasValue`          | `IntValue`                 | `Spinbox`/`SimpleText` | `.add_integer()`    | `42`                             |
-| `hasValue`          | `ListValue`                | `List`                 | `.add_list()`       | `"node_name"`                    |
-| `hasValue`          | `TextValue`                | `SimpleText`           | `.add_simpletext()` | `"Plain text"`                   |
-| `hasValue`          | `TextValue`                | `Textarea`             | `.add_textarea()`   | `"Multi\nline\ntext"`            |
-| `hasValue`          | `TextValue`                | `Richtext`             | `.add_richtext()`   | `"<p>Formatted text</p>"`        |
-| `hasComment`        | `TextValue`                | `Richtext`             | `.add_richtext()`   | `"<p>Comment text</p>"`          |
-| `hasValue`          | `TimeValue`                | `TimeStamp`            | `.add_time()`       | `"2019-10-23T13:45:12.01-14:00"` |
-| `hasValue`          | `UriValue`                 | `SimpleText`           | `.add_uri()`        | `"https://example.com"`          |
-| `hasLinkTo`         | `:ClassName` or `Resource` | `Searchbox`            | `.add_link()`       | `"target_resource_id"`           |
-| `hasRepresentation` | `Representation`           | `Searchbox`            | `.add_link()`       | `"image_resource_id"`            |
-| `isPartOf`          | `:ClassName`               | `Searchbox`            | `.add_link()`       | `"target_resource_id"`           |
-| `seqnum`            | `IntValue`                 | `Spinbox`/`SimpleText` | `.add_integer()`    | `1`                              |
+| JSON `super`        | JSON `object`                    | JSON `gui_element`     | xmllib Method       | Example Value                    |
+|---------------------|----------------------------------|------------------------|---------------------|----------------------------------|
+| `hasValue`          | `BooleanValue`                   | `Checkbox`             | `.add_bool()`       | `True` or `False`                |
+| `hasColor`          | `ColorValue`                     | `Colorpicker`          | `.add_color()`      | `"#FF0000"`                      |
+| `hasValue`          | `DateValue`                      | `Date`                 | `.add_date()`       | `"GREGORIAN:CE:2024-01-15"`      |
+| `hasValue`          | `DecimalValue`                   | `Spinbox`/`SimpleText` | `.add_decimal()`    | `3.14`                           |
+| `hasValue`          | `GeonameValue`                   | `Geonames`             | `.add_geoname()`    | `"2661604"` (geonames.org ID)    |
+| `hasValue`          | `IntValue`                       | `Spinbox`/`SimpleText` | `.add_integer()`    | `42`                             |
+| `hasValue`          | `ListValue`                      | `List`                 | `.add_list()`       | `"node_name"`                    |
+| `hasValue`          | `TextValue`                      | `SimpleText`           | `.add_simpletext()` | `"Plain text"`                   |
+| `hasValue`          | `TextValue`                      | `Textarea`             | `.add_textarea()`   | `"Multi\nline\ntext"`            |
+| `hasValue`          | `TextValue`                      | `Richtext`             | `.add_richtext()`   | `"<p>Formatted text</p>"`        |
+| `hasComment`        | `TextValue`                      | `Richtext`             | `.add_richtext()`   | `"<p>Comment text</p>"`          |
+| `hasValue`          | `TimeValue`                      | `TimeStamp`            | `.add_time()`       | `"2019-10-23T13:45:12.01-14:00"` |
+| `hasValue`          | `UriValue`                       | `SimpleText`           | `.add_uri()`        | `"https://example.com"`          |
+| `hasLinkTo`         | `:ClassName` or `Resource`       | `Searchbox`            | `.add_link()`       | `"target_resource_id"`           |
+| `hasRepresentation` | `:ClassName` or `Representation` | `Searchbox`            | `.add_link()`       | `"image_resource_id"`            |
+| `isPartOf`          | `:ClassName`                     | `Searchbox`            | `.add_link()`       | `"target_resource_id"`           |
+| `seqnum`            | `IntValue`                       | `Spinbox`/`SimpleText` | `.add_integer()`    | `1`                              |
 
 ### Example: Adding Different Value Types
 
@@ -340,7 +341,6 @@ resource = resource.add_bool(
 ```
 
 **More examples:** -> see Documentation: <https://docs.dasch.swiss/latest/DSP-TOOLS/xmllib-docs/resource/>
-
 
 ## Cardinality Mapping
 
@@ -1110,7 +1110,6 @@ formatted_date = xmllib.value_converters.reformat_date(
 )
 resource = resource.add_date(prop_name=":date", value=formatted_date)
 ```
-
 
 ### 5. Keep Track of List Names
 
