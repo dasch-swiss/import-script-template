@@ -23,9 +23,9 @@ DSP-TOOLS is the command-line interface for the DSP.
   This is a pure restructuring, the information stays the same.
 - **Start local DSP server**: `dsp-tools start-stack --no-prune` spins up a local DSP server,
   for local testing of the JSON and the XML file.
-- **Data Model Creation**: `dsp-tools create <project.json>` establishes the data model from the JSON file on the DSP server.
+- **Data Model Creation**: `dsp-tools create <project.json>` establishes the data model from the JSON file on the local DSP server.
 - **XSD Schema Check**: `dsp-tools xmlupload --validate-only <data.xml>` checks XML schema compliance without uploading.
-- **Validation**: `dsp-tools validate-data <data.xml>` validates the XML data against the data model on the server.
+- **Validation**: `dsp-tools validate-data <data.xml>` validates the XML data against the data model on the local server.
 - **Data Upload**: `dsp-tools xmlupload <data.xml>` populates the project with resources and metadata defined in the XML file.
 
 ## xmllib
@@ -172,7 +172,7 @@ For each class in the import order, use the AskUserQuestion tool to gather infor
 **Questions to ask per property (cardinality):**
 
 1. **Data source**: Where does the data for this property come from?
-    - File name and format (CSV, Excel, JSON, etc.)
+    - File name
     - API endpoint or database query
 2. **Data location**: If tabular format, what is the column name or cell reference?
 3. **Data cleaning**: Is there any cleaning, transformation, or mapping necessary?
@@ -205,7 +205,7 @@ Write the import script following the "Python Code Set-Up" section below.
 **During implementation:**
 
 - Use TodoWrite to track subtasks (reading data, creating resources, adding properties, etc.)
-- Mark each task as in_progress before starting, completed immediately after finishing
+- Mark each task as in_progress before starting, and as completed immediately after finishing
 
 ### Step 6: Monitor xmllib Warnings
 
@@ -452,7 +452,7 @@ root = xmllib.XMLRoot.create_new(
 
 **Note:** The `default_ontology` is typically the first ontology in the list.
 Properties from this ontology can be referenced with `:propName`.
-Properties from other ontologies need the full prefix.
+Properties from other ontologies need the full prefix, e.g. `second-onto:propName`.
 
 ## Creating Resources
 

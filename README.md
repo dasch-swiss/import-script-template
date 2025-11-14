@@ -31,7 +31,7 @@ Before you begin, ensure you have:
 
 ### 1. Create Your Project from This Template
 
-Click "Use this template" on GitHub or clone this repository:
+Click "Use this template" on GitHub to create a new repo. Then, clone your new repo with:
 
 ```bash
 git clone <your-new-project-repo>
@@ -66,7 +66,6 @@ echo XMLLIB_WARNINGS_CSV_SAVEPATH="xmllib_warnings.csv" >> .env
 
 Place your files in the appropriate directories:
 
-## Project Structure
 
 ```
 .
