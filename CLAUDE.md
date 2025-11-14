@@ -502,7 +502,7 @@ resource = xmllib.Resource.create_new(
 
 ### Resource ID Generation Strategies
 
-The `res_id` parameter must be a **unique identifier** for each resource. This ID is used for:
+The `res_id` parameter must be a **unique identifier** for each resource.
 - Ask the user how these should be constructed
 - Always create a util function in `src.utils.resource_ids.py` so that it will be used consistently
 - Internal references (e.g., when one resource links to another)
