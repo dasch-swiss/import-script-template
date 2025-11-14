@@ -191,7 +191,8 @@ Claude: "I've implemented the Person import script. Running validation now..."
 
 **Manual intervention when needed:**
 
-- If validation fails, fix your source data files manually
+- As a safety measure, Claude does not have the permission to change the source data
+- If the data must be changed this should be done separately
 - You can always ask Claude to adjust the import logic
 - Review and modify generated scripts as needed
 
