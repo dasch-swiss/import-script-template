@@ -42,6 +42,8 @@ Please carefully read the following documentations, they are crucial in order to
     - <https://docs.dasch.swiss/latest/DSP-TOOLS/data-model/json-project/caveats/>
 - Documentation of the XML file format: <https://docs.dasch.swiss/latest/DSP-TOOLS/data-file/xml-data-file/>
 
+If you cannot retrieve these documentations, alert me. Without reading these, there's no point in continuing.
+
 The `xmllib` validates a lot of the input automatically. The diagnostic results are saved in `xmllib_warnings.csv`.
 **There is no need to duplicate these validations in your import scripts.**
 
