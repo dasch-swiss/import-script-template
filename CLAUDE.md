@@ -1,8 +1,7 @@
 # CLAUDE.md - import scripts
 
-This Claude.md file refers to DSP-TOOLS version 18.1.0
-
 This file provides guidance to Claude Code when writing import scripts using the `xmllib` module of dsp-tools.
+This file was written for DSP-TOOLS version 18.1.0.
 
 ## Big Picture
 
