@@ -113,7 +113,6 @@ Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
    - Authors, locations, organizations, concepts
 
 3. **Media Entities**: Images, scans, documents
-   - Always inherit from DSP's knora-base representation classes, e.g. "StillImageRepresentation"
 
 4. **Taxonomic Entities**: Controlled vocabularies that become Lists, NOT resource classes
    - Lists are useful for classifications, while classes should represent concepts.
@@ -452,55 +451,7 @@ Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
 
 
 
-### Step 8: Inheritance Strategy
-
-**Objective**: Use class inheritance to reduce redundancy.
-
-**When to Use Inheritance**:
-
-1. **Specialization**: Subclass adds specific properties to a base class
-   - Example: Plant extends Remedy (adds hasBotanicalName)
-   - Base class: general properties
-   - Subclass: specialized properties
-
-2. **Common Properties**: Multiple classes share many properties
-   - Example: All image classes extend StillImageRepresentation
-   - Inherits: file handling, basic metadata
-   - Adds: class-specific properties
-
-**When NOT to Use Inheritance**:
-- Classes are conceptually different even if they share some properties
-- It creates confusion rather than clarity
-- The inheritance hierarchy becomes more than 2-3 levels deep
-
-**Example from Healing Arts**:
-```json
-{
-  "name": "Plant",
-  "super": ":Remedy",  // Inherits all Remedy properties
-  "cardinalities": [
-    // Adds plant-specific properties:
-    {"propname": ":hasBotanicalName", "cardinality": "0-n"},
-    {"propname": ":hasOldGermanName", "cardinality": "0-n"}
-  ]
-}
-```
-
-**Image Representations**:
-All image classes should extend DSP representation classes:
-- StillImageRepresentation (photos, scans)
-- DocumentRepresentation (PDFs)
-- AudioRepresentation (audio files)
-- MovingImageRepresentation (videos)
-
-**Ask the user**:
-- Do [CLASS_A] and [CLASS_B] share enough properties to warrant inheritance?
-- Is [CLASS_X] a specialized type of [CLASS_Y]?
-- Should we create a base class for common properties?
-
-
-
-### Step 9: JSON Data Model Construction
+### Step 8: JSON Data Model Construction
 
 **Objective**: Assemble all pieces into valid DSP JSON project definition.
 
@@ -547,6 +498,14 @@ All image classes should extend DSP representation classes:
 4. **Define resource classes** (from Steps 3-5):
    - Include `name`, `super`, `labels`, `comments`
    - Add all cardinalities with `propname`, `cardinality`, `gui_order`
+   - How to determine the value for "super":
+      - Resource: Use this for all non-multimedia classes
+      - ArchiveRepresentation: zipped archives
+      - AudioRepresentation: audios
+      - DocumentRepresentation: PDF, MS Office, Epub
+      - MovingImageRepresentation: videos
+      - StillImageRepresentation: photos, scans, images
+      - TextRepresentation: text files (e.g. TXT, CSV, XML, HTML, JSON)
 
 5. **Validate**:
    - Use DSP-TOOLS schema validation: `uvx dsp-tools create project.json --validate-only`
@@ -573,7 +532,7 @@ uvx dsp-tools create project_datamodel.json
 
 
 
-### Step 10: Documentation and Review
+### Step 9: Documentation and Review
 
 **Objective**: Create comprehensive documentation for review and future reference.
 
@@ -600,7 +559,6 @@ uvx dsp-tools create project_datamodel.json
 - [ ] Cardinalities match data patterns
 - [ ] Lists cover all categorical values
 - [ ] Property types are appropriate
-- [ ] Inheritance makes sense
 - [ ] No circular dependencies in links
 - [ ] Import order is clear
 - [ ] Documentation is complete
@@ -609,7 +567,6 @@ uvx dsp-tools create project_datamodel.json
 Use AskUserQuestion tool for key design decisions:
 - Resource class vs. list decisions
 - Optional vs. required cardinalities
-- Inheritance structures
 - Ontology alignment depth
 
 ## Common Patterns from Examples
@@ -676,27 +633,22 @@ Use AskUserQuestion tool for key design decisions:
 **Solution**: Distinguish conceptual entities (Text) from physical objects (Manuscript)
 **Example**: Separate "Text" (abstract work) from "Manuscript" (physical copy)
 
-### 3. Premature Generalization
-**Problem**: Creating complex inheritance hierarchies for flexibility
-**Solution**: Model what exists in the data; generalize only when clearly beneficial
-**Example**: Don't create "Resource > CreativeWork > WrittenWork > Text"; just create Text
-
-### 4. List Explosion
+### 3. List Explosion
 **Problem**: Creating hundreds of list nodes from raw data typos and variants
 **Solution**: Clean and normalize values; use hierarchies to manage complexity
 **Example**: Normalize "München", "Munich", "Munchen" → single node "munich"
 
-### 5. Property Proliferation
+### 4. Property Proliferation
 **Problem**: Creating separate properties for minor variations (hasGermanName, hasFrenchName, hasEnglishName...)
 **Solution**: Use single multilingual property or structured text
 **Example**: One "hasName" property that can have multiple values, or use comments/description for alternative names
 
-### 6. Circular Dependencies
+### 5. Circular Dependencies
 **Problem**: Class A links to Class B which links back to Class A
 **Solution**: Carefully design link directions; use bidirectional links sparingly
 **Example**: Manuscript → Text is sufficient; don't also require Text → Manuscript
 
-### 7. Ignoring Import Order
+### 6. Ignoring Import Order
 **Problem**: Creating links without considering which class must be created first
 **Solution**: Always document dependencies and import order
 **Example**: Must create Person before Manuscript if Manuscript has linkToAuthor
