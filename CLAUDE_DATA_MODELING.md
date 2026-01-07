@@ -394,8 +394,8 @@ Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
 **Strategy**:
 
 1. **Review Standard Ontologies**:
-   - CIDOC-CRM: https://cidoc-crm.org (for cultural heritage)
-   - SDHSS: https://ontome.net/namespace/11 (for humanities)
+   - CIDOC-CRM: <https://cidoc-crm.org> (for cultural heritage)
+   - SDHSS: <https://ontome.net/namespace/11> (for humanities)
 
 2. **Map Resource Classes**:
    - Manuscript → E22 Human-Made Object (CIDOC-CRM)
@@ -411,41 +411,44 @@ Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
 4. **Document Alignments** (as comments in properties or separate documentation):
 
 **Important**: DSP data models are pragmatic, not pure CIDOC-CRM implementations.
+
 - Document the conceptual alignment
 - Don't try to force every property into CIDOC-CRM if it doesn't fit naturally
 - Use CIDOC-CRM as inspiration, not a straitjacket
 
 **Ask the user**:
+
 - Are there specific ontologies this project should align with?
 - Is CIDOC-CRM/SDHSS alignment a priority or optional?
 - Should we document these alignments in the JSON or separately?
 
 **Create**: `claude_planning/ontology_alignment.md`
-```markdown
-# Ontology Alignment
 
-## CIDOC-CRM Mapping
+   ```markdown
+   # Ontology Alignment
 
-### Resource Classes
-| DSP Class | CIDOC-CRM Class | Note |
-|-----------|----------------|------|
-| Manuscript | E22 Human-Made Object | Physical manuscript object |
-| Text | E33 Linguistic Object | Abstract textual work |
-| Person | E21 Person | Historical persons |
-| ManuscriptPage | E22 Human-Made Object | Part of manuscript |
+   ## CIDOC-CRM Mapping
 
-### Properties
-| DSP Property | CIDOC-CRM Property | Note |
-|--------------|-------------------|------|
-| hasDate | P4 has time-span | Creation date |
-| linkToAuthor | P94i was created by | Authorship |
-| hasShelfmark | P1 is identified by | Shelf mark identifier |
+   ### Resource Classes
+   | DSP Class      | CIDOC-CRM Class       | Note                       |
+   |----------------|-----------------------|----------------------------|
+   | Manuscript     | E22 Human-Made Object | Physical manuscript object |
+   | Text           | E33 Linguistic Object | Abstract textual work      |
+   | Person         | E21 Person            | Historical persons         |
+   | ManuscriptPage | E22 Human-Made Object | Part of manuscript         |
 
-## SDHSS Concepts
-- Consider using SDHSS C24 Text for abstract texts
-- SDHSS C18 Manuscript for physical manuscripts
-...
-```
+   ### Properties
+   | DSP Property | CIDOC-CRM Property  | Note                  |
+   |--------------|---------------------|-----------------------|
+   | hasDate      | P4 has time-span    | Creation date         |
+   | linkToAuthor | P94i was created by | Authorship            |
+   | hasShelfmark | P1 is identified by | Shelf mark identifier |
+
+   ## SDHSS Concepts
+   - Consider using SDHSS C24 Text for abstract texts
+   - SDHSS C18 Manuscript for physical manuscripts
+   ...
+   ```
 
 
 
@@ -522,6 +525,9 @@ All image classes should extend DSP representation classes:
 }
 ```
 
+**Reference data model**: Take this examplary JSON file for syntactic reference:
+<https://raw.githubusercontent.com/dasch-swiss/daschland-scripts/refs/heads/main/data/output/daschland.json>
+
 **Workflow**:
 
 1. **Start with project metadata**:
@@ -543,7 +549,7 @@ All image classes should extend DSP representation classes:
    - Add all cardinalities with `propname`, `cardinality`, `gui_order`
 
 5. **Validate**:
-   - Use DSP-TOOLS schema validation: `dsp-tools create project.json --validate-only`
+   - Use DSP-TOOLS schema validation: `uvx dsp-tools create project.json --validate-only`
    - Check for missing references
    - Verify all `propname` references exist
 
@@ -558,11 +564,11 @@ All image classes should extend DSP representation classes:
 **Validation Commands**:
 ```bash
 # Validate JSON structure
-dsp-tools create project_datamodel.json --validate-only
+uvx dsp-tools create project_datamodel.json --validate-only
 
 # If validation passes, create on local DSP for testing
-dsp-tools start-stack
-dsp-tools create project_datamodel.json
+uvx dsp-tools start-stack
+uvx dsp-tools create project_datamodel.json
 ```
 
 
@@ -747,13 +753,13 @@ After creating the JSON:
 
 1. **Validate Schema**:
    ```bash
-   dsp-tools create project.json --validate-only
+   uvx dsp-tools create project.json --validate-only
    ```
 
 2. **Test Creation**:
    ```bash
-   dsp-tools start-stack
-   dsp-tools create project.json
+   uvx dsp-tools start-stack
+   uvx dsp-tools create project.json
    ```
 
 3. **Spot-Check with xmllib**:
@@ -787,7 +793,7 @@ Once the data model is approved:
 
 1. **Create the project on local DSP**:
    ```bash
-   dsp-tools create project_datamodel.json
+   uvx dsp-tools create project_datamodel.json
    ```
 
 2. **Begin import script work** using the main CLAUDE.md:
