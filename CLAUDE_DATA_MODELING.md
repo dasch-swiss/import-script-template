@@ -75,6 +75,7 @@ Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
 - Create a data profiling document
 
 **Create**: `claude_planning/data_profile.md`
+
    ```markdown
    # Data Profile
 
@@ -131,6 +132,7 @@ Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
 - Should [ENTITY_X] be a resource class or just a controlled vocabulary?
 
 **Create**: `claude_planning/entity_model.md`
+
    ```markdown
    # Entity Model
 
@@ -187,6 +189,7 @@ Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
 - Should pages/images be linked TO objects or should objects link TO images?
 
 **Create**: `claude_planning/relationship_diagram.md`
+
    ```markdown
    # Relationship Diagram
 
@@ -217,37 +220,36 @@ Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
 
 2. **Property Type**: Based on data type
 
-| Data Type in Source      | DSP Property super | DSP object   | GUI Element        |
-| ------------------------ | ------------------ | ------------ | ------------------ |
-| Yes/No, True/False       | hasValue           | BooleanValue | Checkbox           |
-| Hex color                | hasColor           | ColorValue   | Colorpicker        |
-| Date/Date range          | hasValue           | DateValue    | Date               |
-| Decimal number           | hasValue           | DecimalValue | Spinbox/SimpleText |
-| Integer                  | hasValue           | IntValue     | Spinbox/SimpleText |
-| Short text (< 255 chars) | hasValue           | TextValue    | SimpleText         |
-| Long text, plain         | hasValue           | TextValue    | Textarea           |
-| Long text, formatted     | hasValue           | TextValue    | Richtext           |
-| URI/URL                  | hasValue           | UriValue     | SimpleText         |
-| Geonames.org ID          | hasValue           | GeonameValue | Geonames           |
-| Controlled vocab         | hasValue           | ListValue    | List               |
-| Reference to resource    | hasLinkTo          | :ClassName   | Searchbox          |
-| Part of resource         | isPartOf           | :ClassName   | Searchbox          |
-| Sequence number          | seqnum             | IntValue     | SimpleText         |
+   | Data Type in Source      | DSP Property super | DSP object   | GUI Element        |
+   | ------------------------ | ------------------ | ------------ | ------------------ |
+   | Yes/No, True/False       | hasValue           | BooleanValue | Checkbox           |
+   | Hex color                | hasColor           | ColorValue   | Colorpicker        |
+   | Date/Date range          | hasValue           | DateValue    | Date               |
+   | Decimal number           | hasValue           | DecimalValue | Spinbox/SimpleText |
+   | Integer                  | hasValue           | IntValue     | Spinbox/SimpleText |
+   | Short text (< 255 chars) | hasValue           | TextValue    | SimpleText         |
+   | Long text, plain         | hasValue           | TextValue    | Textarea           |
+   | Long text, formatted     | hasValue           | TextValue    | Richtext           |
+   | URI/URL                  | hasValue           | UriValue     | SimpleText         |
+   | Geonames.org ID          | hasValue           | GeonameValue | Geonames           |
+   | Controlled vocab         | hasValue           | ListValue    | List               |
+   | Reference to resource    | hasLinkTo          | :ClassName   | Searchbox          |
+   | Part of resource         | isPartOf           | :ClassName   | Searchbox          |
+   | Sequence number          | seqnum             | IntValue     | SimpleText         |
 
 3. **Cardinality**: Based on data patterns
 
-| Pattern in Data                      | Cardinality |
-| ------------------------------------ | ----------- |
-| Always present, single value         | `1`         |
-| Sometimes missing, single value      | `0-1`       |
-| Always present, can have multiple    | `1-n`       |
-| Sometimes missing, can have multiple | `0-n`       |
+   | Pattern in Data                      | Cardinality |
+   | ------------------------------------ | ----------- |
+   | Always present, single value         | `1`         |
+   | Sometimes missing, single value      | `0-1`       |
+   | Always present, can have multiple    | `1-n`       |
+   | Sometimes missing, can have multiple | `0-n`       |
 
-**Cardinality Decision Tips**:
-
-- Review actual data to see if fields are always populated
-- Ask: "Can there be multiple X per Y?"
-- Conservative approach: use `0-1` and `0-n` unless data strongly indicates required
+   **Cardinality Decision Tips**:
+      - Review actual data to see if fields are always populated
+      - Ask: "Can there be multiple X per Y?"
+      - Conservative approach: use `0-1` and `0-n` unless data strongly indicates required
 
 4. **List Reference** (for ListValue properties):
    - Specify which list in `gui_attributes.hlist`
@@ -261,6 +263,7 @@ Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
 - What's the expected length of [TEXT_FIELD_B]? (determines SimpleText vs Textarea vs Richtext)
 
 **Create**: `claude_planning/CLASS_NAME_properties.md` for each class
+
    ```markdown
    # Manuscript Properties
 
@@ -327,47 +330,48 @@ Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
 - Are there standard controlled vocabularies we should use? (Getty AAT, etc.)
 
 **Create**: `claude_planning/lists_definition.md`
-```markdown
-# Lists Definition
 
-## List: language
-**Purpose**: Languages in which texts are written
-**Type**: Flat list
-**Values**: 7 nodes
+   ```markdown
+   # Lists Definition
 
-| Node Name       | English Label   | German Label   | Source        |
-|-----------------|-----------------|----------------|---------------|
-| latin           | Latin           | Latein         | Most common   |
-| german          | German          | Deutsch        | Modern German |
-| old-high-german | Old High German | Althochdeutsch | Medieval      |
-| old-english     | Old English     | Altenglisch    | Medieval      |
-| french          | French          | Französisch    |               |
-| greek           | Greek           | Griechisch     | Ancient       |
-| english         | English         | Englisch       | Modern        |
+   ## List: language
+   **Purpose**: Languages in which texts are written
+   **Type**: Flat list
+   **Values**: 7 nodes
 
-## List: topic
-**Purpose**: Thematic categorization
-**Type**: Hierarchical (2-3 levels)
-**Values**: Multiple root nodes with children
+   | Node Name       | English Label   | German Label   | Source        |
+   |-----------------|-----------------|----------------|---------------|
+   | latin           | Latin           | Latein         | Most common   |
+   | german          | German          | Deutsch        | Modern German |
+   | old-high-german | Old High German | Althochdeutsch | Medieval      |
+   | old-english     | Old English     | Altenglisch    | Medieval      |
+   | french          | French          | Französisch    |               |
+   | greek           | Greek           | Griechisch     | Ancient       |
+   | english         | English         | Englisch       | Modern        |
 
-### Root: ancient-god (Antike Gottheit / Ancient God)
-- asclepius (Asklepios / Asclepius)
-- apollo (Apollo / Apollo)
-- artemisia (Artemisia / Artemisia)
-- chiron (Chiron / Chiron)
-- hygieia (Hygieia / Hygieia)
+   ## List: topic
+   **Purpose**: Thematic categorization
+   **Type**: Hierarchical (2-3 levels)
+   **Values**: Multiple root nodes with children
 
-### Root: christentum (Christentum / Christianity)
-- adam (Adam / Adam)
-- christ (Christus / Christ)
-  - blessing-of-the-cross (Kreuzsegen / Blessing of the cross)
-  - christus-medicus (Christus medicus / Christus medicus)
-- saints (Heilige / Saints)
-- longinus (Longinus / Longinus)
-- mary (Maria / Mary)
+   ### Root: ancient-god (Antike Gottheit / Ancient God)
+   - asclepius (Asklepios / Asclepius)
+   - apollo (Apollo / Apollo)
+   - artemisia (Artemisia / Artemisia)
+   - chiron (Chiron / Chiron)
+   - hygieia (Hygieia / Hygieia)
 
-...
-```
+   ### Root: christentum (Christentum / Christianity)
+   - adam (Adam / Adam)
+   - christ (Christus / Christ)
+   - blessing-of-the-cross (Kreuzsegen / Blessing of the cross)
+   - christus-medicus (Christus medicus / Christus medicus)
+   - saints (Heilige / Saints)
+   - longinus (Longinus / Longinus)
+   - mary (Maria / Mary)
+
+   ...
+   ```
 
 ### Step 7: CIDOC-CRM and SDHSS Alignment
 
