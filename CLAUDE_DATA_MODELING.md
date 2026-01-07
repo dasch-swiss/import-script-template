@@ -24,6 +24,8 @@ Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
 4. **Iterative**: Expect multiple refinement cycles with the user
 5. **Pragmatic**: Model what exists in the data, not theoretical completeness
 
+
+
 ## Workflow
 
 ### Step 1: Understand the Research Context
@@ -49,6 +51,8 @@ Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
 - Domain: Medieval art history and medical history
 - Research Question: How do art and literature intersect with pharmacological knowledge (9th-12th centuries)?
 - Key Concepts: Manuscripts, herbals, plants as remedies, medical iconography
+
+
 
 ### Step 2: Data Discovery and Profiling
 
@@ -92,6 +96,8 @@ Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
    - Content: optional, long text
    ...
    ```
+
+
 
 ### Step 3: Entity Identification
 
@@ -155,6 +161,8 @@ Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
    ...
    ```
 
+
+
 ### Step 4: Relationship Mapping
 
 **Objective**: Understand how entities relate to each other.
@@ -207,6 +215,8 @@ Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
    |
    Text (no dependencies)
    ```
+
+
 
 ### Step 5: Property Definition
 
@@ -287,6 +297,8 @@ Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
    ...
    ```
 
+
+
 ### Step 6: List Creation
 
 **Objective**: Create controlled vocabularies from categorical data.
@@ -354,14 +366,14 @@ Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
    **Type**: Hierarchical (2-3 levels)
    **Values**: Multiple root nodes with children
 
-   ### Root: ancient-god (Antike Gottheit / Ancient God)
+   ### Top level node: ancient-god (Antike Gottheit / Ancient God)
    - asclepius (Asklepios / Asclepius)
    - apollo (Apollo / Apollo)
    - artemisia (Artemisia / Artemisia)
    - chiron (Chiron / Chiron)
    - hygieia (Hygieia / Hygieia)
 
-   ### Root: christentum (Christentum / Christianity)
+   ### Top level node: christentum (Christentum / Christianity)
    - adam (Adam / Adam)
    - christ (Christus / Christ)
    - blessing-of-the-cross (Kreuzsegen / Blessing of the cross)
@@ -372,6 +384,8 @@ Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
 
    ...
    ```
+
+
 
 ### Step 7: CIDOC-CRM and SDHSS Alignment
 
@@ -433,6 +447,8 @@ Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
 ...
 ```
 
+
+
 ### Step 8: Inheritance Strategy
 
 **Objective**: Use class inheritance to reduce redundancy.
@@ -478,6 +494,8 @@ All image classes should extend DSP representation classes:
 - Do [CLASS_A] and [CLASS_B] share enough properties to warrant inheritance?
 - Is [CLASS_X] a specialized type of [CLASS_Y]?
 - Should we create a base class for common properties?
+
+
 
 ### Step 9: JSON Data Model Construction
 
@@ -546,6 +564,8 @@ dsp-tools create project_datamodel.json --validate-only
 dsp-tools start-stack
 dsp-tools create project_datamodel.json
 ```
+
+
 
 ### Step 10: Documentation and Review
 
@@ -674,6 +694,8 @@ Use AskUserQuestion tool for key design decisions:
 **Problem**: Creating links without considering which class must be created first
 **Solution**: Always document dependencies and import order
 **Example**: Must create Person before Manuscript if Manuscript has linkToAuthor
+
+
 
 ## Practical Tips
 
@@ -821,7 +843,11 @@ Once the data model is approved:
 
 11. **Transition**: Move to import script development (main CLAUDE.md)
 
+
+
 ---
+
+
 
 ## Quick Reference: Decision Trees
 
