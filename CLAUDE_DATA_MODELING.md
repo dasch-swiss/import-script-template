@@ -521,6 +521,7 @@ Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
 **Create**: `project_datamodel.json`
 
 **Validation Commands**:
+
 ```bash
 # Validate JSON structure
 uvx dsp-tools create project_datamodel.json --validate-only
@@ -554,20 +555,15 @@ uvx dsp-tools create project_datamodel.json
    - Data quality issues discovered
 
 **Review Checklist**:
+
 - [ ] All entities in the data are represented
 - [ ] All relationships are captured
 - [ ] Cardinalities match data patterns
 - [ ] Lists cover all categorical values
 - [ ] Property types are appropriate
-- [ ] No circular dependencies in links
-- [ ] Import order is clear
 - [ ] Documentation is complete
 
-**Present to User**:
-Use AskUserQuestion tool for key design decisions:
-- Resource class vs. list decisions
-- Optional vs. required cardinalities
-- Ontology alignment depth
+
 
 ## Common Patterns from Examples
 
@@ -587,8 +583,6 @@ Use AskUserQuestion tool for key design decisions:
 - **Person**: Authors, scribes, depicted figures
   - Properties: name, dates, function, GND reference
 
-**Import Order**: Person → Text → Manuscript → ManuscriptPage
-
 ### Pattern 2: Object/Artifact Projects
 
 **Typical Structure**:
@@ -605,8 +599,6 @@ Use AskUserQuestion tool for key design decisions:
 - **Artist**: Creator
   - Properties: name, activity period, role
 
-**Import Order**: Artist → Museum → Object → Photo
-
 ### Pattern 3: Natural History/Plant Projects
 
 **Typical Structure**:
@@ -619,7 +611,7 @@ Use AskUserQuestion tool for key design decisions:
 - **ManuscriptPage**: Herbal illustration
   - Links: plant depicted, manuscript
 
-**Import Order**: Person → Plant → Text → Manuscript → ManuscriptPage
+
 
 ## Anti-Patterns to Avoid
 
@@ -647,11 +639,6 @@ Use AskUserQuestion tool for key design decisions:
 **Problem**: Class A links to Class B which links back to Class A
 **Solution**: Carefully design link directions; use bidirectional links sparingly
 **Example**: Manuscript → Text is sufficient; don't also require Text → Manuscript
-
-### 6. Ignoring Import Order
-**Problem**: Creating links without considering which class must be created first
-**Solution**: Always document dependencies and import order
-**Example**: Must create Person before Manuscript if Manuscript has linkToAuthor
 
 
 
@@ -732,31 +719,14 @@ When data modeling is complete, you should have:
 - [ ] `claude_planning/data_model_summary.md` - High-level overview
 - [ ] `claude_planning/data_profile.md` - Source data analysis
 - [ ] `claude_planning/entity_model.md` - Resource classes and relationships
-- [ ] `claude_planning/relationship_diagram.md` - Import order and dependencies
+- [ ] `claude_planning/relationship_diagram.md` - Dependencies between the classes
 - [ ] `claude_planning/lists_definition.md` - All controlled vocabularies
 - [ ] `claude_planning/CLASS_NAME_properties.md` - For each resource class
 - [ ] `claude_planning/data_model_decisions.md` - Design rationale
 - [ ] `claude_planning/ontology_alignment.md` - CIDOC-CRM/SDHSS mapping (if applicable)
 - [ ] `claude_planning/data_quality_issues.md` - Known problems in source data
 
-## Transition to Import Script Development
 
-Once the data model is approved:
-
-1. **Create the project on local DSP**:
-   ```bash
-   uvx dsp-tools create project_datamodel.json
-   ```
-
-2. **Begin import script work** using the main CLAUDE.md:
-   - Follow the workflow in CLAUDE.md
-   - Reference the data model JSON
-   - Use the property mappings from planning documents
-
-3. **Maintain the model**:
-   - If import script work reveals data model issues, revise and recreate
-   - Keep planning documents updated
-   - Document any changes and rationale
 
 ## Example: Full Workflow for a New Project
 
@@ -779,7 +749,6 @@ Once the data model is approved:
 4. **Relationships**:
    - Illumination isPartOf Manuscript
    - Illumination linkToSaint (depicted saint)
-   - Import order: Saint → Manuscript → Illumination
 
 5. **Properties**:
    - Manuscript: hasShelfmark (1), hasRepository (1-list), hasCentury (0-1-list), hasDescription (0-1)
@@ -798,8 +767,6 @@ Once the data model is approved:
 9. **Review**: Present to researcher, iterate on feedback
 
 10. **Approve**: Create on local DSP, test with sample data
-
-11. **Transition**: Move to import script development (main CLAUDE.md)
 
 
 
