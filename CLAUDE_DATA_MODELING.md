@@ -10,7 +10,8 @@ The goal is to **inductively create an ontology** that abstracts the structure o
 into a formal data model suitable for DSP.
 
 **Process Flow:**
-```
+
+```text
 Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
             ↑ THIS DOCUMENT    ↑ MAIN CLAUDE.md
 ```
@@ -30,18 +31,21 @@ Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
 **Objective**: Grasp the domain, research questions, and scholarly goals.
 
 **Actions**:
+
 1. Read any provided project documentation (DMP, project descriptions, grant proposals)
 2. Identify the research domain (art history, philology, archaeology, etc.)
 3. Understand what questions researchers want to answer with this data
 4. Note any specific terminology or concepts from the domain
 
 **Ask the user**:
+
 - What is the research project about?
 - What are the main research questions?
 - What kinds of analysis do researchers want to perform?
 - Are there domain-specific standards or vocabularies to follow?
 
 **Example** (from Healing Arts project):
+
 - Domain: Medieval art history and medical history
 - Research Question: How do art and literature intersect with pharmacological knowledge (9th-12th centuries)?
 - Key Concepts: Manuscripts, herbals, plants as remedies, medical iconography
@@ -51,41 +55,42 @@ Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
 **Objective**: Understand what data exists and its structure.
 
 **Actions**:
+
 1. **List all data files** and note their formats (CSV, Excel, images, etc.)
-2. **Identify file naming patterns** (e.g., `List_Plants_15-04-2024.xlsx`, `Manuscripts_03-07-24.xlsx`)
+2. **Identify file naming patterns**
 3. **Read sample data** from each file to understand content
 4. **Document metadata** (column headers, value types, relationships indicated by IDs/references)
 
 **Ask the user**:
+
 - Which files contain the core data vs. supplementary information?
 - Are there data dictionaries or field descriptions available?
 - Which fields are required vs. optional in practice?
 - Are there known data quality issues?
 
 **Tool Usage**:
-```python
-# Use Read tool for CSV/simple formats
-# For Excel: ask user to provide sample rows or convert to CSV
-# Create a data profiling document
-```
+
+- Use Read tool for CSV/simple formats
+- For Excel: ask user to provide sample rows or convert to CSV
+- Create a data profiling document
 
 **Create**: `claude_planning/data_profile.md`
-```markdown
-# Data Profile
+   ```markdown
+   # Data Profile
 
-## Files Overview
-- `Manuscripts.xlsx`: 150 rows, manuscript catalog entries
-- `List_Plants.xlsx`: 300 rows, plant names and properties
-- `Text_with_author.xlsx`: 45 rows, text metadata
+   ## Files Overview
+   - `Manuscripts.xlsx`: 150 rows, manuscript catalog entries
+   - `List_Plants.xlsx`: 300 rows, plant names and properties
+   - `Text_with_author.xlsx`: 45 rows, text metadata
 
-## Field Analysis
-### Manuscripts.xlsx
-- Shelfmark (unique ID): required, text
-- Date: optional, range or century
-- Repository: required, categorical (12 values)
-- Content: optional, long text
-...
-```
+   ## Field Analysis
+   ### Manuscript.xlsx
+   - Shelfmark (unique ID): required, text
+   - Date: optional, range or century
+   - Repository: required, categorical (12 values)
+   - Content: optional, long text
+   ...
+   ```
 
 ### Step 3: Entity Identification
 
@@ -101,54 +106,52 @@ Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
    - Authors, locations, organizations, concepts
 
 3. **Media Entities**: Images, scans, documents
-   - Often inherit from DSP representation classes
-   - Distinguished by whether they're part of another entity (ManuscriptPage) or standalone (Object)
+   - Always inherit from DSP's knora-base representation classes, e.g. "StillImageRepresentation"
 
 4. **Taxonomic Entities**: Controlled vocabularies that become Lists, NOT resource classes
-   - Languages, materials, text types → these become Lists
-   - But substantial entities like Plants, even if categorical, might be resource classes
+   - Lists are useful for classifications, while classes should represent concepts.
+   - You can think of lists like an index in a book to find relevant data.
+   - Substantial entities of the research domain, even if categorical, should rather be resource classes.
+   - If a thing is a property of a substantial entity, it should rather be a list.
 
 **Decision Heuristics**:
 
-| Pattern | Resource Class? | List? |
-|---------|----------------|-------|
-| Has unique instances researchers study individually | YES | NO |
-| ~5-50 categorical values, no additional properties | NO | YES |
-| Has relationships to multiple other entities | YES | NO |
-| Has many descriptive properties beyond a name | YES | NO |
-| Simple enumeration (colors, languages, materials) | NO | YES |
-
-**Examples from Healing Arts**:
-- **Resource Classes**: Manuscript (unique objects), Person (specific individuals), Plant (has properties like healing uses)
-- **Lists**: Language (Latin, German, Greek), Material (parchment, paper), TextType (herbal, poem, recipe)
+| Pattern                                                                         | Resource Class? | List? |
+| ------------------------------------------------------------------------------- | --------------- | ----- |
+| Has an unlimited number of unique instances that researchers study individually | YES             | NO    |
+| Max. 50 categorical values, no additional properties                            | NO              | YES   |
+| Has relationships to multiple other entities                                    | YES             | NO    |
+| Has many descriptive properties beyond a name                                   | YES             | NO    |
+| Simple enumeration (colors, languages, materials)                               | NO              | YES   |
 
 **Ask the user**:
+
 - Which entities do researchers want to query and analyze individually?
 - Are there entities that reference each other?
 - Should [ENTITY_X] be a resource class or just a controlled vocabulary?
 
 **Create**: `claude_planning/entity_model.md`
-```markdown
-# Entity Model
+   ```markdown
+   # Entity Model
 
-## Resource Classes
-1. **Manuscript**: Physical manuscript objects
-   - Primary entity, has shelfmark, date, repository
-   - Contains pages (ManuscriptPage)
-   - References: Text (which texts appear in it), Person (authors)
+   ## Resource Classes
+   1. **Manuscript**: Physical manuscript objects
+      - Primary entity, has shelfmark, date, repository
+      - Contains pages (ManuscriptPage)
+      - References: Text (which texts appear in it), Person (authors)
 
-2. **Text**: Abstract texts that appear in manuscripts
-   - Can appear in multiple manuscripts
-   - Has: title, author, text type
-   - Referenced by: ManuscriptPage
+   2. **Text**: Abstract texts that appear in manuscripts
+      - Can appear in multiple manuscripts
+      - Has: title, author, text type
+      - Referenced by: ManuscriptPage
 
-...
+   ...
 
-## Lists (Controlled Vocabularies)
-1. **language**: Latin, German, French, Greek, Old English, Old High German
-2. **texttype**: Herbal, Recipe, Poem, Prayer, Therapeutica, etc.
-...
-```
+   ## Lists (Controlled Vocabularies)
+   1. **language**: Latin, German, French, Greek, Old English, Old High German
+   2. **texttype**: Herbal, Recipe, Poem, Prayer, Therapeutica, etc.
+   ...
+   ```
 
 ### Step 4: Relationship Mapping
 
@@ -164,11 +167,10 @@ Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
 2. **Part-Whole** (`isPartOf`):
    - Entity is a component of another entity
    - Examples: ManuscriptPage isPartOf Manuscript
-   - Often used with `seqnum` for ordering
-   - Important for import order (parent before child)
+   - Always used with `seqnum` for ordering
 
 3. **Representation** (`hasRepresentation`):
-   - Object has an associated image/file
+   - Non-media entity has an associated media entity
    - Example: Object hasRepresentation Photo
    - Can also use isPartOf from image to object
 
@@ -177,46 +179,31 @@ Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
    - No independent existence
    - Examples: hasDate, hasTitle, hasDescription
 
-**Identifying Link Dependencies** (Critical for Import Order):
-```
-If Class A has:
-  - cardinality with propname pointing to Class B
-  - and property has "hasLinkTo", "hasRepresentation", or "isPartOf" as super
-Then: Class B must be imported before Class A
-```
-
 **Ask the user**:
+
 - How do [ENTITY_A] and [ENTITY_B] relate?
 - Can a [ENTITY_A] exist without a [ENTITY_B]?
 - Is this relationship one-to-one, one-to-many, or many-to-many?
 - Should pages/images be linked TO objects or should objects link TO images?
 
 **Create**: `claude_planning/relationship_diagram.md`
-```markdown
-# Relationship Diagram
+   ```markdown
+   # Relationship Diagram
 
-```
-Person (no dependencies)
-  ↑
-  |linkToAuthor
-  |
-Manuscript (no dependencies)
-  ↑
-  |isPartOfManuscript
-  |
-ManuscriptPage (depends on: Manuscript)
-  ↑
-  |linkToText
-  |
-Text (no dependencies)
-```
-
-## Import Order
-1. Person
-2. Text
-3. Manuscript
-4. ManuscriptPage
-```
+   Person (no dependencies)
+   ↑
+   |linkToAuthor
+   |
+   Manuscript (no dependencies)
+   ↑
+   |isPartOfManuscript
+   |
+   ManuscriptPage (depends on: Manuscript)
+   ↑
+   |linkToText
+   |
+   Text (no dependencies)
+   ```
 
 ### Step 5: Property Definition
 
@@ -230,33 +217,34 @@ Text (no dependencies)
 
 2. **Property Type**: Based on data type
 
-| Data Type in Source | DSP Property super | DSP object | GUI Element |
-|---------------------|-------------------|------------|-------------|
-| Yes/No, True/False | hasValue | BooleanValue | Checkbox |
-| Hex color | hasColor | ColorValue | Colorpicker |
-| Date/Date range | hasValue | DateValue | Date |
-| Decimal number | hasValue | DecimalValue | Spinbox/SimpleText |
-| Integer | hasValue | IntValue | Spinbox/SimpleText |
-| Short text (< 255 chars) | hasValue | TextValue | SimpleText |
-| Long text, plain | hasValue | TextValue | Textarea |
-| Long text, formatted | hasValue | TextValue | Richtext |
-| URI/URL | hasValue | UriValue | SimpleText |
-| Geonames ID | hasValue | GeonameValue | Geonames |
-| Controlled vocab | hasValue | ListValue | List |
-| Reference to resource | hasLinkTo | :ClassName | Searchbox |
-| Part of resource | isPartOf | :ClassName | Searchbox |
-| Sequence number | seqnum | IntValue | SimpleText |
+| Data Type in Source      | DSP Property super | DSP object   | GUI Element        |
+| ------------------------ | ------------------ | ------------ | ------------------ |
+| Yes/No, True/False       | hasValue           | BooleanValue | Checkbox           |
+| Hex color                | hasColor           | ColorValue   | Colorpicker        |
+| Date/Date range          | hasValue           | DateValue    | Date               |
+| Decimal number           | hasValue           | DecimalValue | Spinbox/SimpleText |
+| Integer                  | hasValue           | IntValue     | Spinbox/SimpleText |
+| Short text (< 255 chars) | hasValue           | TextValue    | SimpleText         |
+| Long text, plain         | hasValue           | TextValue    | Textarea           |
+| Long text, formatted     | hasValue           | TextValue    | Richtext           |
+| URI/URL                  | hasValue           | UriValue     | SimpleText         |
+| Geonames.org ID          | hasValue           | GeonameValue | Geonames           |
+| Controlled vocab         | hasValue           | ListValue    | List               |
+| Reference to resource    | hasLinkTo          | :ClassName   | Searchbox          |
+| Part of resource         | isPartOf           | :ClassName   | Searchbox          |
+| Sequence number          | seqnum             | IntValue     | SimpleText         |
 
 3. **Cardinality**: Based on data patterns
 
-| Pattern in Data | Cardinality |
-|----------------|-------------|
-| Always present, single value | `1` |
-| Sometimes missing, single value | `0-1` |
-| Always present, can have multiple | `1-n` |
-| Sometimes missing, can have multiple | `0-n` |
+| Pattern in Data                      | Cardinality |
+| ------------------------------------ | ----------- |
+| Always present, single value         | `1`         |
+| Sometimes missing, single value      | `0-1`       |
+| Always present, can have multiple    | `1-n`       |
+| Sometimes missing, can have multiple | `0-n`       |
 
 **Cardinality Decision Tips**:
+
 - Review actual data to see if fields are always populated
 - Ask: "Can there be multiple X per Y?"
 - Conservative approach: use `0-1` and `0-n` unless data strongly indicates required
@@ -266,35 +254,35 @@ Text (no dependencies)
    - Example: `"hlist": "language"`
 
 **Ask the user**:
+
 - Is [FIELD_X] always present in the data?
 - Can [ENTITY_Y] have multiple [PROPERTY_Z]?
 - Should [FIELD_A] be simple text or a controlled vocabulary?
 - What's the expected length of [TEXT_FIELD_B]? (determines SimpleText vs Textarea vs Richtext)
 
 **Create**: `claude_planning/CLASS_NAME_properties.md` for each class
-```markdown
-# Manuscript Properties
+   ```markdown
+   # Manuscript Properties
 
-## Required Properties (cardinality: 1 or 1-n)
-1. **hasShelfmark** (1)
-   - Type: TextValue / SimpleText
-   - Source: Column "Shelfmark" in Manuscripts.xlsx
-   - Example: "Basel, UB, O IV 28"
+   ## Required Properties (cardinality: 1 or 1-n)
+   1. **hasShelfmark** (1)
+      - Type: TextValue / SimpleText
+      - Source: Column "Shelfmark" in Manuscripts.xlsx
+      - Example: "Basel, UB, O IV 28"
 
-2. **hasCopyright** (1)
-   - Type: TextValue / SimpleText
-   - Source: Repository standard copyright text
-   - Example: "© Universitätsbibliothek Basel"
+   2. **hasCopyright** (1)
+      - Type: TextValue / SimpleText
+      - Source: Repository standard copyright text
+      - Example: "© Universitätsbibliothek Basel"
 
-## Optional Properties (cardinality: 0-1 or 0-n)
-3. **hasDate** (0-n)
-   - Type: DateValue / Date
-   - Source: Column "Date" in Manuscripts.xlsx
-   - Format: GREGORIAN:CE:YYYY-MM-DD or century ranges
-   - Examples: "9th century", "ca. 850", "800-850"
+   ## Optional Properties (cardinality: 0-1 or 0-n)
+   3. **hasDate** (0-n)
+      - Type: DateValue / Date
+      - Source: Column "Date" in Manuscripts.xlsx
+      - Examples: "9th century", "ca. 850", "800-850"
 
-...
-```
+   ...
+   ```
 
 ### Step 6: List Creation
 
@@ -326,11 +314,13 @@ Text (no dependencies)
    - Examples: `"apulie"` and `"apulie-not-sure"` with labels "Apulie" and "Apulie ?"
 
 **List Naming Conventions**:
+
 - List name: lowercase-with-hyphens (e.g., `"text-type"`, `"production-center"`)
 - Node name: lowercase-with-hyphens (e.g., `"old-high-german"`, `"figures-rouges"`)
 - Labels: Proper capitalization in each language
 
 **Ask the user**:
+
 - Which language(s) should lists support?
 - Should we create hierarchical structure for [LIST_X]? (e.g., Location: Country > City)
 - How to handle uncertainty markers in the data?
@@ -345,15 +335,15 @@ Text (no dependencies)
 **Type**: Flat list
 **Values**: 7 nodes
 
-| Node Name | English Label | German Label | Source |
-|-----------|---------------|--------------|--------|
-| latin | Latin | Latein | Most common |
-| german | German | Deutsch | Modern German |
-| old-high-german | Old High German | Althochdeutsch | Medieval |
-| old-english | Old English | Altenglisch | Medieval |
-| french | French | Französisch | |
-| greek | Greek | Griechisch | Ancient |
-| english | English | Englisch | Modern |
+| Node Name       | English Label   | German Label   | Source        |
+|-----------------|-----------------|----------------|---------------|
+| latin           | Latin           | Latein         | Most common   |
+| german          | German          | Deutsch        | Modern German |
+| old-high-german | Old High German | Althochdeutsch | Medieval      |
+| old-english     | Old English     | Altenglisch    | Medieval      |
+| french          | French          | Französisch    |               |
+| greek           | Greek           | Griechisch     | Ancient       |
+| english         | English         | Englisch       | Modern        |
 
 ## List: topic
 **Purpose**: Thematic categorization
