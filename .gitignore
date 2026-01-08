@@ -9,6 +9,8 @@ __pycache__
 /.vscode
 /.idea
 /.mypy_cache
+/.claude
 
 /xmllib_warnings.csv
 .env
+
