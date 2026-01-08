@@ -513,6 +513,7 @@ Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
    - Verify all `propname` references exist
 
 **Ask the user**:
+
 - What shortcode should we use? (4-digit hex, e.g., "083E")
 - What shortname? (lowercase, no spaces, e.g., "healingarts")
 - What language(s) for descriptions and labels?
@@ -570,6 +571,7 @@ uvx dsp-tools create project_datamodel.json
 ### Pattern 1: Manuscript Projects
 
 **Typical Structure**:
+
 - **Manuscript**: Physical object (codex, document)
   - Properties: shelfmark, date, repository, material, format
   - Links: author, texts contained
@@ -583,9 +585,10 @@ uvx dsp-tools create project_datamodel.json
 - **Person**: Authors, scribes, depicted figures
   - Properties: name, dates, function, GND reference
 
-### Pattern 2: Object/Artifact Projects
+### Pattern 2: Museum/Archaeology Projects
 
 **Typical Structure**:
+
 - **Object**: Primary artifact (vase, sculpture, medical box)
   - Properties: inventory number, dating, material, dimensions, technique
   - Categorical: object type, production center, discovery place
@@ -602,6 +605,7 @@ uvx dsp-tools create project_datamodel.json
 ### Pattern 3: Natural History/Plant Projects
 
 **Typical Structure**:
+
 - **Plant**: Main entity
   - Properties: Latin name, botanical name, German name, synonyms
   - Properties: healing properties, usage
@@ -616,26 +620,31 @@ uvx dsp-tools create project_datamodel.json
 ## Anti-Patterns to Avoid
 
 ### 1. Over-Modeling
+
 **Problem**: Creating resource classes for every tiny concept
 **Solution**: Use lists for simple categorical values
 **Example**: Don't create a "Language" resource class; use a language list
 
 ### 2. Under-Modeling
+
 **Problem**: Cramming everything into one "Object" class
 **Solution**: Distinguish conceptual entities (Text) from physical objects (Manuscript)
 **Example**: Separate "Text" (abstract work) from "Manuscript" (physical copy)
 
 ### 3. List Explosion
+
 **Problem**: Creating hundreds of list nodes from raw data typos and variants
 **Solution**: Clean and normalize values; use hierarchies to manage complexity
 **Example**: Normalize "München", "Munich", "Munchen" → single node "munich"
 
 ### 4. Property Proliferation
+
 **Problem**: Creating separate properties for minor variations (hasGermanName, hasFrenchName, hasEnglishName...)
-**Solution**: Use single multilingual property or structured text
+**Solution**: Use single multilingual property
 **Example**: One "hasName" property that can have multiple values, or use comments/description for alternative names
 
 ### 5. Circular Dependencies
+
 **Problem**: Class A links to Class B which links back to Class A
 **Solution**: Carefully design link directions; use bidirectional links sparingly
 **Example**: Manuscript → Text is sufficient; don't also require Text → Manuscript
@@ -684,32 +693,8 @@ When you encounter data problems:
 3. **Handle Gracefully**:
    - Use optional cardinalities (0-1, 0-n) when data is spotty
    - Suggest data cleaning steps
-   - Provide import script notes for handling
 
-### Testing the Data Model
 
-After creating the JSON:
-
-1. **Validate Schema**:
-   ```bash
-   uvx dsp-tools create project.json --validate-only
-   ```
-
-2. **Test Creation**:
-   ```bash
-   uvx dsp-tools start-stack
-   uvx dsp-tools create project.json
-   ```
-
-3. **Spot-Check with xmllib**:
-   - Try creating a few sample resources programmatically
-   - Verify lists can be looked up
-   - Test link properties work
-
-4. **User Review**:
-   - Walk through each resource class
-   - Verify properties make sense
-   - Confirm relationships are correct
 
 ## Deliverables Checklist
 
@@ -822,4 +807,6 @@ Is it a reference to another resource class?
 
 ---
 
-**Remember**: This is an iterative, collaborative process. Use the TodoWrite tool to track progress through these steps, and use AskUserQuestion frequently to ensure the model matches the research needs.
+**Remember**: This is an iterative, collaborative process.
+Use the TodoWrite tool to track progress through these steps,
+and use AskUserQuestion frequently to ensure the model matches the research needs.
