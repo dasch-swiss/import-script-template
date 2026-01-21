@@ -275,7 +275,7 @@ Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
 - Is [FIELD_X] always present in the data?
 - Can [ENTITY_Y] have multiple [PROPERTY_Z]?
 - Should [FIELD_A] be simple text or a controlled vocabulary?
-- What's the expected length of [TEXT_FIELD_B]? (determines SimpleText vs Textarea vs Richtext)
+- Should [TEXT_FIELD_B] be a SimpleText, a Textarea, or a Richtext?
 
 **Create**: `claude_planning/CLASS_NAME_properties.md` for each class
 
@@ -325,12 +325,12 @@ Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
    - Hierarchical lists: Natural hierarchies (location: country > city, topic > subtopic)
 
 4. **Add Multilingual Labels**:
-   - Ask user which languages to support
+   - Ask user which languages to support. Possible values: en, de, fr, it, rm
    - Usually at least English and the project's primary language
    - Examples: `{"en": "Latin", "de": "Latein"}`
 
 5. **Handle Uncertainty**:
-   - If data contains uncertainty markers ("Apulie ?"), create separate nodes
+   - If data contains uncertainty markers ("Apulie ?"), ask the user if separate nodes should be created
    - Examples: `"apulie"` and `"apulie-not-sure"` with labels "Apulie" and "Apulie ?"
 
 **List Naming Conventions**:
