@@ -206,7 +206,7 @@ Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
    ↑
    |linkToAuthor
    |
-   Manuscript (no dependencies)
+   Manuscript (depends on: Person)
    ↑
    |isPartOfManuscript
    |
@@ -214,7 +214,7 @@ Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
    ↑
    |linkToText
    |
-   Text (no dependencies)
+   Text (depends on: ManuscriptPage)
    ```
 
 
@@ -226,8 +226,12 @@ Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
 **For Each Property, Determine**:
 
 1. **Property Name**: Use descriptive, consistent naming
-   - Convention: `hasPropertyName` or `linkToEntityName`
-   - Examples: `hasShelfmark`, `hasDate`, `linkToAuthor`
+  Depending on the type of the property, specific patterns should be followed:
+   - `hasXX` for text/integer/date/... values (`hasName`)
+   - `isXX` for boolean values (`isPublished`)
+   - `isPartOfXX` for ‘part of’ other classes values (`isPartOfBook`)
+   - `linkToXX` for links to other classes (`linkToAuthor`)
+   - `hasXXList` or `hasXXType` for list values (`hasTopicList`, `hasBookType`)
 
 2. **Property Type**: Based on data type
 
