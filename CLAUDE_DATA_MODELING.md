@@ -101,22 +101,23 @@ Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
 
 ### Step 3: Entity Identification
 
-**Objective**: Identify the main "things" (resource classes) in the data.
+**Objective**: Identify the main "things" (resource classes, properties, controlled vocabularies) in the data.
 
 **Strategy**:
 
-1. **Primary Entities**: What are the main subjects of research?
+1. **Primary Entities**: The main subjects of research. These will become resource classes.
    - Look for files named after entity types (`Manuscripts.xlsx` → Manuscript class)
    - Identify "noun" concepts that researchers describe independently
 
-2. **Secondary Entities**: Supporting entities that primary entities reference
-   - Authors, locations, organizations, concepts
+2. **Secondary Entities**: Supporting entities that primary entities reference. These will become properties.
+   - Entities which don't exist independently, but are rather attributes of primary entities.
+   - Column titles are likely candidates for properties.
 
 3. **Media Entities**: Images, scans, documents
 
-4. **Taxonomic Entities**: Controlled vocabularies that become Lists, NOT resource classes
+4. **Taxonomic Entities**: Entities that become controlled vocabularies, NOT resource classes
+   - In DSP, controlled vocabularies are called "lists"
    - Lists are useful for classifications, while classes should represent concepts.
-   - You can think of lists like an index in a book to find relevant data.
    - Substantial entities of the research domain, even if categorical, should rather be resource classes.
    - If a thing is a property of a substantial entity, it should rather be a list.
 
@@ -135,6 +136,7 @@ Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
 - Which entities do researchers want to query and analyze individually?
 - Are there entities that reference each other?
 - Should [ENTITY_X] be a resource class or just a controlled vocabulary?
+- Can a [ENTITY_A] exist without a [ENTITY_B]?
 
 **Create**: `claude_planning/entity_model.md`
 
@@ -185,12 +187,13 @@ Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
 4. **Properties** (not links):
    - Simple descriptive attributes
    - No independent existence
+   - If the values that the attribute can take are constrained by a controlled vocabulary,
+     then we call the property a "list property"
    - Examples: hasDate, hasTitle, hasDescription
 
 **Ask the user**:
 
 - How do [ENTITY_A] and [ENTITY_B] relate?
-- Can a [ENTITY_A] exist without a [ENTITY_B]?
 - Is this relationship one-to-one, one-to-many, or many-to-many?
 - Should pages/images be linked TO objects or should objects link TO images?
 
