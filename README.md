@@ -64,7 +64,8 @@ echo XMLLIB_WARNINGS_CSV_SAVEPATH="xmllib_warnings.csv" >> .env
 
 ### 3. Add Your Project Files
 
-Place your files in the appropriate directories:
+Place your raw research data files into `data/input`,
+and your data model into the root, in the format `<your_project>.json`:
 
 ```text
 .
