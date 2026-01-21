@@ -95,20 +95,74 @@ and, if applicable, your data model into the root, in the format `<your_project>
 This template is designed to work seamlessly with **Claude Code**. Both `CLAUDE.md` files contain comprehensive
 instructions that guide Claude through the entire workflow.
 
-### Workflow Overview
+### Workflow Overview - Phase 1: Creating a Data Model
 
 1. **Initial Setup**
+
    ```bash
    claude
    ```
+
    Start Claude Code in your project directory.
 
 2. **Start the Import Process**
 
    Tell Claude what you want to accomplish:
+
+   ```text
+   Help me create a data model for my DSP project. 
+   My raw research data is in <data/input/>.
+   The Data Management Plan is at <data/input/DMP.pdf> and a project description at <data/input/Project_Description.pdf>
    ```
-   "Help me create import scripts for my DSP project. My JSON data model is in <project.json>
-   and my source data is in <data/input/>"
+
+3. **Claude's Automated Workflow**
+
+   Claude Code will automatically:
+    - Read the `CLAUDE_01_DATA_MODELING.md` instructions
+    - Analyze your raw research data and detect patterns in it
+    - After each reasoning step, ask you questions to verify if he got it right
+    - Create detailed planning documents in `claude_planning/`
+    - Write the JSON project definition file to `<your_project>.json`
+    - Run validations and report any issues
+    - Track progress using todo lists
+
+4. **What Claude Will Ask You**
+
+   After each step, Claude will ask you a bunch of questions:
+    - **Understand the Research Context**: What is the research project about? What are the main research questions?
+    - **Data Discovery and Profiling**: Which files contain the core data?
+      Are there data dictionaries or field descriptions available?
+    - **Entity Identification**: Which entities do researchers want to query and analyze individually?
+      Should [ENTITY_X] be a resource class or just a controlled vocabulary?
+    - **Relationship Mapping**: How do [ENTITY_A] and [ENTITY_B] relate?
+    - **Property Definition**: Can [ENTITY_Y] have multiple [PROPERTY_Z]?
+      Should [TEXT_FIELD_B] be a SimpleText, a Textarea, or a Richtext?
+    - **List Creation**: Should we create hierarchical structure for [LIST_X]? (e.g., Location: Country > City)?
+      Is it correct that "Munich", "muenchen", and "München" all refer to the same list node?
+    - **Construction of the JSON Project Definition File**: What shortcode/shortname/description/... should we use?
+
+5. **Validation**
+
+   At the end, Claude will check JSON schema compliance.
+
+
+### Workflow Overview - Phase 2: Import Scripts
+
+1. **Initial Setup**
+
+   ```bash
+   claude
+   ```
+
+   Start Claude Code in your project directory.
+
+2. **Start the Import Process**
+
+   Tell Claude what you want to accomplish:
+
+   ```text
+   Help me create import scripts for my DSP project. My JSON data model is in <project.json>
+   and my source data is in <data/input/>
    ```
 
 3. **Claude's Automated Workflow**
@@ -138,9 +192,9 @@ instructions that guide Claude through the entire workflow.
     - Report any warnings from `xmllib_warnings.csv`
     - Wait for your approval before continuing
 
-### Example Interaction
+#### Example Interaction
 
-```
+```text
 You: "Create import scripts for my project. Start with analyzing the data model."
 
 Claude: "I'll analyze your data model and create import scripts. Let me start by reading

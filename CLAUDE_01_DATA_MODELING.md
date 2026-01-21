@@ -27,8 +27,6 @@ Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
 5. **Read-only**: Do not modify any files which were not created by you. All user files and user data are read-only for you.
 
 
-
-
 ## Workflow
 
 ### Step 1: Understand the Research Context
