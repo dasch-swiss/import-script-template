@@ -235,22 +235,22 @@ Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
 
 2. **Property Type**: Based on data type
 
-   | Data Type in Source      | DSP Property super | DSP object   | GUI Element        |
-   | ------------------------ | ------------------ | ------------ | ------------------ |
-   | Yes/No, True/False       | hasValue           | BooleanValue | Checkbox           |
-   | Hex color                | hasColor           | ColorValue   | Colorpicker        |
-   | Date/Date range          | hasValue           | DateValue    | Date               |
-   | Decimal number           | hasValue           | DecimalValue | Spinbox/SimpleText |
-   | Integer                  | hasValue           | IntValue     | Spinbox/SimpleText |
-   | Short text (< 255 chars) | hasValue           | TextValue    | SimpleText         |
-   | Long text, plain         | hasValue           | TextValue    | Textarea           |
-   | Long text, formatted     | hasValue           | TextValue    | Richtext           |
-   | URI/URL                  | hasValue           | UriValue     | SimpleText         |
-   | Geonames.org ID          | hasValue           | GeonameValue | Geonames           |
-   | Controlled vocab         | hasValue           | ListValue    | List               |
-   | Reference to resource    | hasLinkTo          | :ClassName   | Searchbox          |
-   | Part of resource         | isPartOf           | :ClassName   | Searchbox          |
-   | Sequence number          | seqnum             | IntValue     | SimpleText         |
+   | Data Type in Source      | DSP Property super | DSP object   | GUI Element |
+   | ------------------------ | ------------------ | ------------ | ----------- |
+   | Yes/No, True/False       | hasValue           | BooleanValue | Checkbox    |
+   | Hex color                | hasColor           | ColorValue   | Colorpicker |
+   | Date/Date range          | hasValue           | DateValue    | Date        |
+   | Decimal number           | hasValue           | DecimalValue | SimpleText  |
+   | Integer                  | hasValue           | IntValue     | SimpleText  |
+   | Short text (< 255 chars) | hasValue           | TextValue    | SimpleText  |
+   | Long text, plain         | hasValue           | TextValue    | Textarea    |
+   | Long text, formatted     | hasValue           | TextValue    | Richtext    |
+   | URI/URL                  | hasValue           | UriValue     | SimpleText  |
+   | Geonames.org ID          | hasValue           | GeonameValue | Geonames    |
+   | Controlled vocab         | hasValue           | ListValue    | List        |
+   | Reference to resource    | hasLinkTo          | :ClassName   | Searchbox   |
+   | Part of resource         | isPartOf           | :ClassName   | Searchbox   |
+   | Sequence number          | seqnum             | IntValue     | SimpleText  |
 
 3. **Cardinality**: Based on data patterns
 
