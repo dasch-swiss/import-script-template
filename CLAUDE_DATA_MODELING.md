@@ -129,6 +129,8 @@ Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
 | Has many descriptive properties beyond a name                                   | YES             | NO    |
 | Simple enumeration (colors, languages, materials)                               | NO              | YES   |
 
+**Naming Conventions for resource class names**: noun, PascalCase
+
 **Ask the user**:
 
 - Which entities do researchers want to query and analyze individually?
@@ -223,7 +225,7 @@ Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
 
 **For Each Property, Determine**:
 
-1. **Property Name**: Use descriptive, consistent naming
+1. **Property Name**: Use descriptive, consistent naming, in camelCase
   Depending on the type of the property, specific patterns should be followed:
    - `hasXX` for text/integer/date/... values (`hasName`)
    - `isXX` for boolean values (`isPublished`)
@@ -317,6 +319,7 @@ Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
    - Read through all data files
    - Collect all distinct values for each categorical field
    - Note frequency to identify typos or variants
+   - normalize spelling variants: "München", "Munich", "Munchen" → single node "munich"
 
 3. **Create List Structure**:
    - Flat lists: Simple enumerations (languages, materials)
@@ -342,6 +345,7 @@ Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
 - Which language(s) should lists support?
 - Should we create hierarchical structure for [LIST_X]? (e.g., Location: Country > City)
 - How to handle uncertainty markers in the data?
+- Ask user to confirm the normalizations you made
 
 **Create**: `claude_planning/lists_definition.md`
 
@@ -413,13 +417,13 @@ Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
 }
 ```
 
-**Reference data model**: Take this examplary JSON file for syntactic reference:
+**Reference data model**: Take this example JSON file for syntactic reference:
 <https://raw.githubusercontent.com/dasch-swiss/daschland-scripts/refs/heads/main/data/output/daschland.json>
 
 **Workflow**:
 
 1. **Start with project metadata**:
-   - Ask user for shortcode, shortname, longname
+   - Ask user for shortcode, shortname, longname, data model name
    - Draft descriptions in required languages
    - Identify 5-10 keywords
 
@@ -452,7 +456,7 @@ Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
 **Ask the user**:
 
 - What shortcode should we use? (4-digit hex, e.g., "083E")
-- What shortname? (lowercase, no spaces, e.g., "healingarts")
+- What shortname? (lowercase, no spaces, use "-" as separator, e.g., "healing-arts")
 - What language(s) for descriptions and labels?
 - Should we include user definitions or add those later?
 
@@ -571,7 +575,7 @@ uvx dsp-tools create project_datamodel.json
 ### 3. List Explosion
 
 **Problem**: Creating hundreds of list nodes from raw data typos and variants
-**Solution**: Clean and normalize values; use hierarchies to manage complexity
+**Solution**: Clean and normalize values; use hierarchies to manage complexity; ask user to confirm the normalization
 **Example**: Normalize "München", "Munich", "Munchen" → single node "munich"
 
 ### 4. Property Proliferation
