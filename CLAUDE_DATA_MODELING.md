@@ -22,6 +22,8 @@ Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
 2. **Domain-Driven**: Let research questions and data structure guide the model
 3. **Iterative**: Expect multiple refinement cycles with the user
 4. **Pragmatic**: Model what exists in the data, not theoretical completeness
+5. **Read-only**: Do not modify any files which were not created by you. All user files and user data are read-only for you.
+
 
 
 
