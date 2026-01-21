@@ -68,13 +68,12 @@ Place your files in the appropriate directories:
 
 ```text
 .
-├── CLAUDE.md                     # Comprehensive instructions for Claude Code
-├── data/
-│   ├── input/                    # Your source data files (CSV, Excel, JSON, etc.)
-│   └── output/                   # Generated XML files (created by scripts)
 ├── claude_planning/              # Planning documents for each resource class (required by Claude)
 │   ├── class_todo_list.md        # Import order and progress tracking
 │   └── <class_name>_plan.md      # Detailed plans for each class
+├── data/
+│   ├── input/                    # Your source data files (CSV, Excel, etc.)
+│   └── output/                   # Generated XML files (created by scripts)
 ├── src/
 │   ├── utils/
 │   │   ├── custom_functions.py   # Shared functionality to be reused in multiple scripts
@@ -82,7 +81,13 @@ Place your files in the appropriate directories:
 │   └── import_scripts/
 │       ├── main.py               # Main entry point
 │       └── import_<class>.py     # Import script for each resource class
-└── xmllib_warnings.csv           # Validation warnings from xmllib (generated)
+├── tests/
+│   └── test_main.py              # Here you can write unit tests for your code
+├── CLAUDE.md                     # Comprehensive instructions for Claude Code
+├── justfile                      # Shorthand commands that can be executed with `just ...`
+├── pyproject.toml                # Python configuration and setup
+├── README.md                     # Main entry point for human readers
+└── uv.lock                       # Python dependencies definition
 ```
 
 ## Working with Claude Code
