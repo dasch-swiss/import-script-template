@@ -181,7 +181,6 @@ Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
 3. **Representation** (`hasRepresentation`):
    - Non-media entity has an associated media entity
    - Example: Object hasRepresentation Photo
-   - Can also use isPartOf from image to object
 
 4. **Properties** (not links):
    - Simple descriptive attributes
