@@ -20,7 +20,7 @@ Before you begin, ensure you have:
 
 1. **Your DSP project files:**
     - JSON project definition file (data model)
-    - Source data files (CSV, Excel, JSON, or other formats)
+    - raw research data files (CSV, Excel, JSON, or other formats)
 
 2. **System requirements:**
     - [uv](https://astral.sh/uv) - Python package manager
@@ -103,7 +103,7 @@ instructions that guide Claude through the entire import script development work
 
    ```text
    "Help me create import scripts for my DSP project. My JSON data model is in <project.json>
-   and my source data is in <data/input/>"
+   and my research data is in <data/input/>"
    ```
 
 3. **Claude's Automated Workflow**
@@ -184,13 +184,13 @@ Claude: "I've implemented the Person import script. Running validation now..."
 **Iterate incrementally:**
 
 - Claude validates each resource class before moving to the next
-- Fix any issues in your source data (not in the scripts)
+- Avoid fixing data issues in the scripts - better fix them in the source data
 - You can ask Claude to regenerate specific parts if needed
 
 **Manual intervention when needed:**
 
 - As a safety measure, Claude does not have the permission to change the source data
-- If the data must be changed this should be done separately
+- If the research data must be changed, this should be done manually by a human user
 - You can always ask Claude to adjust the import logic
 - Review and modify generated scripts as needed
 
