@@ -102,8 +102,8 @@ instructions that guide Claude through the entire import script development work
    Tell Claude what you want to accomplish:
 
    ```text
-   "Help me create import scripts for my DSP project. My JSON data model is in <project.json>
-   and my research data is in <data/input/>"
+   Help me create import scripts for my DSP project. My JSON data model is in <project.json>
+   and my research data is in <data/input/>
    ```
 
 3. **Claude's Automated Workflow**
