@@ -1,26 +1,33 @@
 # DSP Import Script Template
 
-This template repository provides a structured foundation for creating import scripts that transform research data into
+This template repository provides a structured foundation for creating a data model from raw research data,
+and for creating import scripts that transform research data into the
 DSP (DaSCH Service Platform) XML format using the `xmllib` module from dsp-tools.
 
 ## What is this?
 
-This template helps you create Python scripts that:
+This template assists you in 2 core RDU processes:
 
-- Transform your research data (CSV, Excel, JSON, etc.) into DSP XML format
-- Validate data against your DSP data model (JSON project definition)
-- Generate XML files ready for upload to DSP
+1. Prompting Claude to create a JSON project definition file (data model), based on raw research data
+    - In case you prefer creating your data model without Claude (e.g. with Excel templates, in DSP-APP, ...),
+      feel free to skip this step, and instead copy-paste your finished `project.json` into this repo.
+2. Creating Python scripts, either by prompting Claude, or by writing them yourself:
+    - Transform your research data (CSV, Excel, JSON, etc.) into the DSP XML format
+    - Validate data against your DSP data model (JSON project definition)
+    - Generate XML files ready for upload to DSP
 
-The template includes a comprehensive `CLAUDE.md` file that guides **Claude Code** through the entire import script
-development process, from analyzing your data model to implementing and validating each resource class.
+The template includes 2 comprehensive `CLAUDE.md` files that guides **Claude Code** through both processes:
+
+1. creating the data model
+2. import script development process, from analyzing your data model to implementing and validating each resource class
 
 ## Prerequisites
 
 Before you begin, ensure you have:
 
-1. **Your DSP project files:**
-    - JSON project definition file (data model)
-    - Source data files (CSV, Excel, JSON, or other formats)
+1. **Your source files:**
+    - research data files (CSV, Excel, or other formats)
+    - if applicable: JSON project definition file (data model)
 
 2. **System requirements:**
     - [uv](https://astral.sh/uv) - Python package manager
