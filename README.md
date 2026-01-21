@@ -89,7 +89,7 @@ instructions that guide Claude through the entire import script development work
 
 ### Workflow Overview
 
-1. **Initial Setup**
+1. **Initial Startup**
 
    ```bash
    claude
@@ -97,7 +97,7 @@ instructions that guide Claude through the entire import script development work
 
    Start Claude Code in your project directory.
 
-2. **Start the Import Process**
+2. **Start Prompting Claude**
 
    Tell Claude what you want to accomplish:
 
