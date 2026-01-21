@@ -8,6 +8,8 @@ for the DaSCH Service Platform (DSP).
 This workflow precedes the import script creation described in the main CLAUDE.md.
 The goal is to **inductively create an ontology** that abstracts the structure of customer data
 into a formal data model suitable for DSP.
+The result is a project definition file in JSON format,
+which defines the data model (ontology) and some project-level metadata.
 
 **Process Flow:**
 
@@ -394,7 +396,7 @@ Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
    ```
 
 
-### Step 7: JSON Data Model Construction
+### Step 7: Construction of the JSON Project Definition File
 
 **Objective**: Assemble all pieces into valid DSP JSON project definition.
 
@@ -403,7 +405,7 @@ Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
 {
   "$schema": "https://raw.githubusercontent.com/dasch-swiss/dsp-tools/main/src/dsp_tools/resources/schema/project.json",
   "project": {
-    "shortcode": "XXXX",  // Ask user or assign temporary
+    "shortcode": "XXXX",
     "shortname": "projectname",
     "longname": "Full Project Title",
     "descriptions": {"en": "...", "de": "..."},
@@ -419,13 +421,13 @@ Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
 }
 ```
 
-**Reference data model**: Take this example JSON file for syntactic reference:
+**Reference JSON file**: Take this example JSON file for syntactic reference:
 <https://raw.githubusercontent.com/dasch-swiss/daschland-scripts/refs/heads/main/data/output/daschland.json>
 
 **Workflow**:
 
 1. **Start with project metadata**:
-   - Ask user for shortcode, shortname, longname, data model name
+   - Ask user for shortcode, shortname, longname, ontology name
    - Draft descriptions in required languages
    - Identify 5-10 keywords
 
@@ -462,17 +464,17 @@ Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
 - What language(s) for descriptions and labels?
 - Should we include user definitions or add those later?
 
-**Create**: `project_datamodel.json`
+**Create**: `project.json`
 
 **Validation Commands**:
 
 ```bash
 # Validate JSON structure
-uvx dsp-tools create project_datamodel.json --validate-only
+uvx dsp-tools create project.json --validate-only
 
 # If validation passes, create on local DSP for testing
 uvx dsp-tools start-stack
-uvx dsp-tools create project_datamodel.json
+uvx dsp-tools create project.json
 ```
 
 
@@ -643,7 +645,7 @@ When you encounter data problems:
 
 When data modeling is complete, you should have:
 
-- [ ] `project_datamodel.json` - The JSON data model file
+- [ ] `project.json` - The JSON project definition file
 - [ ] `claude_planning/data_model_summary.md` - High-level overview
 - [ ] `claude_planning/data_profile.md` - Source data analysis
 - [ ] `claude_planning/entity_model.md` - Resource classes and relationships
@@ -687,7 +689,7 @@ When data modeling is complete, you should have:
    - iconography-type: hierarchical (Religious > Old Testament > specific scenes)
    - century: flat list, 9th through 15th
 
-7. **JSON**: Build project_datamodel.json with all above
+7. **JSON**: Build project.json with all above
 
 8. **Validate**: Run dsp-tools validation
 
