@@ -460,7 +460,6 @@ Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
 - What shortcode should we use? (4-digit hex, e.g., "083E")
 - What shortname? (lowercase, no spaces, use "-" as separator, e.g., "healing-arts")
 - What language(s) for descriptions and labels?
-- Should we include user definitions or add those later?
 
 **Create**: `project.json`
 
