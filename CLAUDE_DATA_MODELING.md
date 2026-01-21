@@ -20,9 +20,8 @@ Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
 
 1. **Inductive Reasoning**: Build abstractions from concrete data, not vice versa
 2. **Domain-Driven**: Let research questions and data structure guide the model
-3. **Standards-Aligned**: Reference CIDOC-CRM and SDHSS where appropriate
-4. **Iterative**: Expect multiple refinement cycles with the user
-5. **Pragmatic**: Model what exists in the data, not theoretical completeness
+3. **Iterative**: Expect multiple refinement cycles with the user
+4. **Pragmatic**: Model what exists in the data, not theoretical completeness
 
 
 
@@ -44,7 +43,6 @@ Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
 - What is the research project about?
 - What are the main research questions?
 - What kinds of analysis do researchers want to perform?
-- Are there domain-specific standards or vocabularies to follow?
 
 **Example** (from Healing Arts project):
 
@@ -344,7 +342,6 @@ Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
 - Which language(s) should lists support?
 - Should we create hierarchical structure for [LIST_X]? (e.g., Location: Country > City)
 - How to handle uncertainty markers in the data?
-- Are there standard controlled vocabularies we should use? (Getty AAT, etc.)
 
 **Create**: `claude_planning/lists_definition.md`
 
@@ -391,73 +388,7 @@ Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
    ```
 
 
-
-### Step 7: CIDOC-CRM and SDHSS Alignment
-
-**Objective**: Align the data model with standard ontologies where appropriate.
-
-**Strategy**:
-
-1. **Review Standard Ontologies**:
-   - CIDOC-CRM: <https://cidoc-crm.org> (for cultural heritage)
-   - SDHSS: <https://ontome.net/namespace/11> (for humanities)
-
-2. **Map Resource Classes**:
-   - Manuscript → E22 Human-Made Object (CIDOC-CRM)
-   - Person → E21 Person (CIDOC-CRM)
-   - Text → E33 Linguistic Object (CIDOC-CRM)
-   - Place → E53 Place (CIDOC-CRM)
-
-3. **Map Properties**:
-   - hasDate → P4 has time-span (CIDOC-CRM)
-   - linkToAuthor → P94i was created by (CIDOC-CRM)
-   - hasTitle → P102 has title (CIDOC-CRM)
-
-4. **Document Alignments** (as comments in properties or separate documentation):
-
-**Important**: DSP data models are pragmatic, not pure CIDOC-CRM implementations.
-
-- Document the conceptual alignment
-- Don't try to force every property into CIDOC-CRM if it doesn't fit naturally
-- Use CIDOC-CRM as inspiration, not a straitjacket
-
-**Ask the user**:
-
-- Are there specific ontologies this project should align with?
-- Is CIDOC-CRM/SDHSS alignment a priority or optional?
-- Should we document these alignments in the JSON or separately?
-
-**Create**: `claude_planning/ontology_alignment.md`
-
-   ```markdown
-   # Ontology Alignment
-
-   ## CIDOC-CRM Mapping
-
-   ### Resource Classes
-   | DSP Class      | CIDOC-CRM Class       | Note                       |
-   |----------------|-----------------------|----------------------------|
-   | Manuscript     | E22 Human-Made Object | Physical manuscript object |
-   | Text           | E33 Linguistic Object | Abstract textual work      |
-   | Person         | E21 Person            | Historical persons         |
-   | ManuscriptPage | E22 Human-Made Object | Part of manuscript         |
-
-   ### Properties
-   | DSP Property | CIDOC-CRM Property  | Note                  |
-   |--------------|---------------------|-----------------------|
-   | hasDate      | P4 has time-span    | Creation date         |
-   | linkToAuthor | P94i was created by | Authorship            |
-   | hasShelfmark | P1 is identified by | Shelf mark identifier |
-
-   ## SDHSS Concepts
-   - Consider using SDHSS C24 Text for abstract texts
-   - SDHSS C18 Manuscript for physical manuscripts
-   ...
-   ```
-
-
-
-### Step 8: JSON Data Model Construction
+### Step 7: JSON Data Model Construction
 
 **Objective**: Assemble all pieces into valid DSP JSON project definition.
 
@@ -540,7 +471,7 @@ uvx dsp-tools create project_datamodel.json
 
 
 
-### Step 9: Documentation and Review
+### Step 8: Documentation and Review
 
 **Objective**: Create comprehensive documentation for review and future reference.
 
@@ -714,7 +645,6 @@ When data modeling is complete, you should have:
 - [ ] `claude_planning/lists_definition.md` - All controlled vocabularies
 - [ ] `claude_planning/CLASS_NAME_properties.md` - For each resource class
 - [ ] `claude_planning/data_model_decisions.md` - Design rationale
-- [ ] `claude_planning/ontology_alignment.md` - CIDOC-CRM/SDHSS mapping (if applicable)
 - [ ] `claude_planning/data_quality_issues.md` - Known problems in source data
 
 
