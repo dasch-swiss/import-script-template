@@ -66,24 +66,23 @@ echo XMLLIB_WARNINGS_CSV_SAVEPATH="xmllib_warnings.csv" >> .env
 
 Place your files in the appropriate directories:
 
-
-```
+```text
 .
-├── CLAUDE.md                # Comprehensive instructions for Claude Code
+├── CLAUDE.md                     # Comprehensive instructions for Claude Code
 ├── data/
-│   ├── input/              # Your source data files (CSV, Excel, JSON, etc.)
-│   └── output/             # Generated XML files (created by scripts)
-├── claude_planning/        # Planning documents for each resource class (required by Claude)
-│   ├── class_todo_list.md  # Import order and progress tracking
-│   └── <class_name>_plan.md  # Detailed plans for each class
+│   ├── input/                    # Your source data files (CSV, Excel, JSON, etc.)
+│   └── output/                   # Generated XML files (created by scripts)
+├── claude_planning/              # Planning documents for each resource class (required by Claude)
+│   ├── class_todo_list.md        # Import order and progress tracking
+│   └── <class_name>_plan.md      # Detailed plans for each class
 ├── src/
 │   ├── utils/
-│   │   ├── resource_ids.py # ID generation functions (shared)
-│   │   └── ...             # Other utility functions
+│   │   ├── custom_functions.py   # Shared functionality to be reused in multiple scripts
+│   │   └── ...                   # Other utility functions
 │   └── import_scripts/
-│       ├── main.py         # Main entry point
-│       └── import_<class>.py  # Import script for each resource class
-└── xmllib_warnings.csv     # Validation warnings from xmllib (generated)
+│       ├── main.py               # Main entry point
+│       └── import_<class>.py     # Import script for each resource class
+└── xmllib_warnings.csv           # Validation warnings from xmllib (generated)
 ```
 
 ## Working with Claude Code
@@ -94,15 +93,18 @@ instructions that guide Claude through the entire import script development work
 ### Workflow Overview
 
 1. **Initial Setup**
+
    ```bash
    claude
    ```
+
    Start Claude Code in your project directory.
 
 2. **Start the Import Process**
 
    Tell Claude what you want to accomplish:
-   ```
+
+   ```text
    "Help me create import scripts for my DSP project. My JSON data model is in <project.json>
    and my source data is in <data/input/>"
    ```
@@ -136,7 +138,7 @@ instructions that guide Claude through the entire import script development work
 
 ### Example Interaction
 
-```
+```text
 You: "Create import scripts for my project. Start with analyzing the data model."
 
 Claude: "I'll analyze your data model and create import scripts. Let me start by reading

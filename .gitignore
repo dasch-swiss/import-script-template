@@ -12,3 +12,4 @@ __pycache__
 
 /xmllib_warnings.csv
 .env
+.claude
