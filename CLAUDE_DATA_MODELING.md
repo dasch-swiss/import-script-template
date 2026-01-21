@@ -254,12 +254,12 @@ Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
 
 3. **Cardinality**: Based on data patterns
 
-   | Pattern in Data                      | Cardinality |
-   | ------------------------------------ | ----------- |
-   | Always present, single value         | `1`         |
-   | Sometimes missing, single value      | `0-1`       |
-   | Always present, can have multiple    | `1-n`       |
-   | Sometimes missing, can have multiple | `0-n`       |
+   | Pattern in Data                   | Cardinality |
+   | --------------------------------- | ----------- |
+   | Always present, single value      | `1`         |
+   | Optional single value             | `0-1`       |
+   | Always present, can have multiple | `1-n`       |
+   | Optional, can have multiple       | `0-n`       |
 
    **Cardinality Decision Tips**:
       - Review actual data to see if fields are always populated
