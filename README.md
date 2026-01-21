@@ -18,8 +18,9 @@ This template assists you in 2 core RDU processes:
 
 The template includes 2 comprehensive `CLAUDE.md` files that guides **Claude Code** through both processes:
 
-1. creating the data model
-2. import script development process, from analyzing your data model to implementing and validating each resource class
+1. `CLAUDE_01_DATA_MODELING.md`: creating the data model
+2. `CLAUDE_02_IMPORT_SCRIPTS.md`: import script development process,
+   from analyzing your data model to implementing and validating each resource class
 
 ## Prerequisites
 
@@ -71,32 +72,28 @@ echo XMLLIB_WARNINGS_CSV_SAVEPATH="xmllib_warnings.csv" >> .env
 
 ### 3. Add Your Project Files
 
-Place your files in the appropriate directories:
+Place your raw research data files into `data/input`,
+and, if applicable, your data model into the root, in the format `<your_project>.json`:
 
-
-```
+```text
 .
-├── CLAUDE.md                # Comprehensive instructions for Claude Code
 ├── data/
-│   ├── input/              # Your source data files (CSV, Excel, JSON, etc.)
-│   └── output/             # Generated XML files (created by scripts)
-├── claude_planning/        # Planning documents for each resource class (required by Claude)
-│   ├── class_todo_list.md  # Import order and progress tracking
-│   └── <class_name>_plan.md  # Detailed plans for each class
+│   ├── input/                    # Your raw research data files (CSV, Excel, etc.)
+│   └── output/                   # Generated XML files (created by scripts)
 ├── src/
 │   ├── utils/
-│   │   ├── resource_ids.py # ID generation functions (shared)
-│   │   └── ...             # Other utility functions
+│   │   ├── custom_functions.py   # Shared functionality to be reused in multiple scripts
+│   │   └── ...                   # Other utility functions
 │   └── import_scripts/
-│       ├── main.py         # Main entry point
-│       └── import_<class>.py  # Import script for each resource class
-└── xmllib_warnings.csv     # Validation warnings from xmllib (generated)
+│       ├── main.py               # Main entry point
+│       └── import_<class>.py     # Import script for each resource class
+└── project.json                  # JSON project definition file (data model)
 ```
 
 ## Working with Claude Code
 
-This template is designed to work seamlessly with **Claude Code**. The `CLAUDE.md` file contains comprehensive
-instructions that guide Claude through the entire import script development workflow.
+This template is designed to work seamlessly with **Claude Code**. Both `CLAUDE.md` files contain comprehensive
+instructions that guide Claude through the entire workflow.
 
 ### Workflow Overview
 
@@ -117,7 +114,7 @@ instructions that guide Claude through the entire import script development work
 3. **Claude's Automated Workflow**
 
    Claude Code will automatically:
-    - Read the `CLAUDE.md` instructions
+    - Read the `CLAUDE_02_IMPORT_SCRIPTS.md` instructions
     - Analyze your JSON data model to determine the correct import order
     - Ask you questions about each resource class and property
     - Create detailed planning documents in `claude_planning/`
@@ -206,13 +203,13 @@ Claude: "I've implemented the Person import script. Running validation now..."
 
 If you prefer to write import scripts manually, you can:
 
-1. Study the `CLAUDE.md` file for guidance on structure and best practices
-2. Follow the workflow outlined in CLAUDE.md manually
+1. Study the `CLAUDE_02_IMPORT_SCRIPTS.md` file for guidance on structure and best practices
+2. Follow the workflow outlined in there manually
 3. Create planning documents for each class in `claude_planning/`
-4. Implement import scripts following the code structure in CLAUDE.md
+4. Implement import scripts following the code structure in `CLAUDE_02_IMPORT_SCRIPTS.md`
 5. Run validations after each class
 
-The template structure and `CLAUDE.md` documentation are useful references even when working manually.
+The template structure and `CLAUDE_02_IMPORT_SCRIPTS.md` documentation are useful references even when working manually.
 
 ## Development Workflow
 
