@@ -1,26 +1,34 @@
 # DSP Import Script Template
 
-This template repository provides a structured foundation for creating import scripts that transform research data into
+This template repository provides a structured foundation for creating a data model from raw research data,
+and for creating import scripts that transform research data into the
 DSP (DaSCH Service Platform) XML format using the `xmllib` module from dsp-tools.
 
 ## What is this?
 
-This template helps you create Python scripts that:
+This template assists you in 2 core RDU processes:
 
-- Transform your research data (CSV, Excel, JSON, etc.) into DSP XML format
-- Validate data against your DSP data model (JSON project definition)
-- Generate XML files ready for upload to DSP
+1. Prompting Claude to create a JSON project definition file (data model), based on raw research data
+    - In case you prefer creating your data model without Claude (e.g. with Excel templates, in DSP-APP, ...),
+      feel free to skip this step, and instead copy-paste your finished `project.json` into this repo.
+2. Creating Python scripts, either by prompting Claude, or by writing them yourself:
+    - Transform your research data (CSV, Excel, JSON, etc.) into the DSP XML format
+    - Validate data against your DSP data model (JSON project definition)
+    - Generate XML files ready for upload to DSP
 
-The template includes a comprehensive `CLAUDE.md` file that guides **Claude Code** through the entire import script
-development process, from analyzing your data model to implementing and validating each resource class.
+The template includes 2 comprehensive `CLAUDE.md` files that guides **Claude Code** through both processes:
+
+1. `CLAUDE_01_DATA_MODELING.md`: creating the data model
+2. `CLAUDE_02_IMPORT_SCRIPTS.md`: import script development process,
+   from analyzing your data model to implementing and validating each resource class
 
 ## Prerequisites
 
 Before you begin, ensure you have:
 
-1. **Your DSP project files:**
-    - JSON project definition file (data model)
-    - Source data files (CSV, Excel, JSON, or other formats)
+1. **Your source files:**
+    - research data files (CSV, Excel, or other formats)
+    - if applicable: JSON project definition file (data model)
 
 2. **System requirements:**
     - [uv](https://astral.sh/uv) - Python package manager
@@ -64,53 +72,109 @@ echo XMLLIB_WARNINGS_CSV_SAVEPATH="xmllib_warnings.csv" >> .env
 
 ### 3. Add Your Project Files
 
-Place your files in the appropriate directories:
+Place your raw research data files into `data/input`,
+and, if applicable, your data model into the root, in the format `<your_project>.json`:
 
-
-```
+```text
 .
-├── CLAUDE.md                # Comprehensive instructions for Claude Code
 ├── data/
-│   ├── input/              # Your source data files (CSV, Excel, JSON, etc.)
-│   └── output/             # Generated XML files (created by scripts)
-├── claude_planning/        # Planning documents for each resource class (required by Claude)
-│   ├── class_todo_list.md  # Import order and progress tracking
-│   └── <class_name>_plan.md  # Detailed plans for each class
+│   ├── input/                    # Your raw research data files (CSV, Excel, etc.)
+│   └── output/                   # Generated XML files (created by scripts)
 ├── src/
 │   ├── utils/
-│   │   ├── resource_ids.py # ID generation functions (shared)
-│   │   └── ...             # Other utility functions
+│   │   ├── custom_functions.py   # Shared functionality to be reused in multiple scripts
+│   │   └── ...                   # Other utility functions
 │   └── import_scripts/
-│       ├── main.py         # Main entry point
-│       └── import_<class>.py  # Import script for each resource class
-└── xmllib_warnings.csv     # Validation warnings from xmllib (generated)
+│       ├── main.py               # Main entry point
+│       └── import_<class>.py     # Import script for each resource class
+└── project.json                  # JSON project definition file (data model)
 ```
 
 ## Working with Claude Code
 
-This template is designed to work seamlessly with **Claude Code**. The `CLAUDE.md` file contains comprehensive
-instructions that guide Claude through the entire import script development workflow.
+This template is designed to work seamlessly with **Claude Code**. Both `CLAUDE.md` files contain comprehensive
+instructions that guide Claude through the entire workflow.
 
-### Workflow Overview
+### Workflow Overview - Phase 1: Creating a Data Model
 
 1. **Initial Setup**
+
    ```bash
    claude
    ```
+
    Start Claude Code in your project directory.
 
 2. **Start the Import Process**
 
    Tell Claude what you want to accomplish:
-   ```
-   "Help me create import scripts for my DSP project. My JSON data model is in <project.json>
-   and my source data is in <data/input/>"
+
+   ```text
+   Help me create a data model for my DSP project. 
+   My raw research data is in <data/input/>.
+   The Data Management Plan is at <data/input/DMP.pdf> and a project description at <data/input/Project_Description.pdf>
    ```
 
 3. **Claude's Automated Workflow**
 
    Claude Code will automatically:
-    - Read the `CLAUDE.md` instructions
+    - Read the `CLAUDE_01_DATA_MODELING.md` instructions
+    - Analyze your raw research data and detect patterns in it
+    - After each reasoning step, ask you questions to verify if he got it right
+    - Create detailed planning documents in `claude_planning/`
+    - Write the JSON project definition file to `<your_project>.json`
+    - Run validations and report any issues
+    - Track progress using todo lists
+
+   What you must do yourself:
+    - Claude does NOT add mappings to external ontologies (CIDOC-CRM, SDHSS, Dublin-Core, ...)
+      You should do that yourself.
+    - Claude does NOT add a `users` or `groups` section - but you should use those sparingly, anyways...
+    - Claude does NOT know about class/property inheritance - but you should use subclasses sparingly, anyways...
+
+4. **What Claude Will Ask You**
+
+   After each step, Claude will ask you a bunch of questions:
+    - **Understand the Research Context**: What is the research project about? What are the main research questions?
+    - **Data Discovery and Profiling**: Which files contain the core data?
+      Are there data dictionaries or field descriptions available?
+    - **Entity Identification**: Which entities do researchers want to query and analyze individually?
+      Should [ENTITY_X] be a resource class or just a controlled vocabulary?
+    - **Relationship Mapping**: How do [ENTITY_A] and [ENTITY_B] relate?
+    - **Property Definition**: Can [ENTITY_Y] have multiple [PROPERTY_Z]?
+      Should [TEXT_FIELD_B] be a SimpleText, a Textarea, or a Richtext?
+    - **List Creation**: Should we create hierarchical structure for [LIST_X]? (e.g., Location: Country > City)?
+      Is it correct that "Munich", "muenchen", and "München" all refer to the same list node?
+    - **Construction of the JSON Project Definition File**: What shortcode/shortname/description/... should we use?
+
+5. **Validation**
+
+   At the end, Claude will check JSON schema compliance.
+
+
+### Workflow Overview - Phase 2: Import Scripts
+
+1. **Initial Setup**
+
+   ```bash
+   claude
+   ```
+
+   Start Claude Code in your project directory.
+
+2. **Start the Import Process**
+
+   Tell Claude what you want to accomplish:
+
+   ```text
+   Help me create import scripts for my DSP project. My JSON data model is in <project.json>
+   and my source data is in <data/input/>
+   ```
+
+3. **Claude's Automated Workflow**
+
+   Claude Code will automatically:
+    - Read the `CLAUDE_02_IMPORT_SCRIPTS.md` instructions
     - Analyze your JSON data model to determine the correct import order
     - Ask you questions about each resource class and property
     - Create detailed planning documents in `claude_planning/`
@@ -134,9 +198,9 @@ instructions that guide Claude through the entire import script development work
     - Report any warnings from `xmllib_warnings.csv`
     - Wait for your approval before continuing
 
-### Example Interaction
+#### Example Interaction
 
-```
+```text
 You: "Create import scripts for my project. Start with analyzing the data model."
 
 Claude: "I'll analyze your data model and create import scripts. Let me start by reading
@@ -199,13 +263,13 @@ Claude: "I've implemented the Person import script. Running validation now..."
 
 If you prefer to write import scripts manually, you can:
 
-1. Study the `CLAUDE.md` file for guidance on structure and best practices
-2. Follow the workflow outlined in CLAUDE.md manually
+1. Study the `CLAUDE_02_IMPORT_SCRIPTS.md` file for guidance on structure and best practices
+2. Follow the workflow outlined in there manually
 3. Create planning documents for each class in `claude_planning/`
-4. Implement import scripts following the code structure in CLAUDE.md
+4. Implement import scripts following the code structure in `CLAUDE_02_IMPORT_SCRIPTS.md`
 5. Run validations after each class
 
-The template structure and `CLAUDE.md` documentation are useful references even when working manually.
+The template structure and `CLAUDE_02_IMPORT_SCRIPTS.md` documentation are useful references even when working manually.
 
 ## Development Workflow
 
