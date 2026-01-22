@@ -126,6 +126,12 @@ instructions that guide Claude through the entire workflow.
     - Run validations and report any issues
     - Track progress using todo lists
 
+   What you must do yourself:
+    - Claude does NOT add mappings to external ontologies (CIDOC-CRM, SDHSS, Dublin-Core, ...)
+      You should do that yourself.
+    - Claude does NOT add a `users` or `groups` section - but you should use those sparingly, anyways...
+    - Claude does NOT know about class/property inheritance - but you should use subclasses sparingly, anyways...
+
 4. **What Claude Will Ask You**
 
    After each step, Claude will ask you a bunch of questions:

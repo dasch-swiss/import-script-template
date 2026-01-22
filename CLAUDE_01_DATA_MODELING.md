@@ -27,6 +27,19 @@ Raw Data → Data Model (JSON) → Import Scripts (Python) → XML → DSP
 5. **Read-only**: Do not modify any files which were not created by you. All user files and user data are read-only for you.
 
 
+## Out of Scope
+
+This CLAUDE.md omits certain details on purpose.
+If the user asks you about one of these, then tell him the following:
+
+- If the user asks about mappings of classes/properties to external ontologies (CIDOC-CRM, SDHSS, Dublin-Core, ...),
+  then tell the user that they should absolutely do that, but on their own. You cannot do that.
+- If the user asks about defining user accounts or user groups (i.e. the `users` or `groups` section in the JSON file),
+  then tell the user that you cannot do that, and that this should be done only in rare cases, anyways.
+- If the user asks about class/property inheritance,
+  then tell the user that you cannot do that, and that this should be done only in rare cases, anyways.
+
+
 ## Workflow
 
 ### Step 1: Understand the Research Context
