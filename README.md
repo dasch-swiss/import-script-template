@@ -20,7 +20,7 @@ Before you begin, ensure you have:
 
 1. **Your DSP project files:**
     - JSON project definition file (data model)
-    - Source data files (CSV, Excel, JSON, or other formats)
+    - raw research data files (CSV, Excel, JSON, or other formats)
 
 2. **System requirements:**
     - [uv](https://astral.sh/uv) - Python package manager
@@ -64,26 +64,22 @@ echo XMLLIB_WARNINGS_CSV_SAVEPATH="xmllib_warnings.csv" >> .env
 
 ### 3. Add Your Project Files
 
-Place your files in the appropriate directories:
+Place your raw research data files into `data/input`,
+and your data model into the root, in the format `<your_project>.json`:
 
-
-```
+```text
 .
-├── CLAUDE.md                # Comprehensive instructions for Claude Code
 ├── data/
-│   ├── input/              # Your source data files (CSV, Excel, JSON, etc.)
-│   └── output/             # Generated XML files (created by scripts)
-├── claude_planning/        # Planning documents for each resource class (required by Claude)
-│   ├── class_todo_list.md  # Import order and progress tracking
-│   └── <class_name>_plan.md  # Detailed plans for each class
+│   ├── input/                    # Your raw research data files (CSV, Excel, etc.)
+│   └── output/                   # Generated XML files (created by scripts)
 ├── src/
 │   ├── utils/
-│   │   ├── resource_ids.py # ID generation functions (shared)
-│   │   └── ...             # Other utility functions
+│   │   ├── custom_functions.py   # Shared functionality to be reused in multiple scripts
+│   │   └── ...                   # Other utility functions
 │   └── import_scripts/
-│       ├── main.py         # Main entry point
-│       └── import_<class>.py  # Import script for each resource class
-└── xmllib_warnings.csv     # Validation warnings from xmllib (generated)
+│       ├── main.py               # Main entry point
+│       └── import_<class>.py     # Import script for each resource class
+└── project.json                  # JSON project definition file (data model)
 ```
 
 ## Working with Claude Code
@@ -93,18 +89,21 @@ instructions that guide Claude through the entire import script development work
 
 ### Workflow Overview
 
-1. **Initial Setup**
+1. **Initial Startup**
+
    ```bash
    claude
    ```
+
    Start Claude Code in your project directory.
 
-2. **Start the Import Process**
+2. **Start Prompting Claude**
 
    Tell Claude what you want to accomplish:
-   ```
-   "Help me create import scripts for my DSP project. My JSON data model is in <project.json>
-   and my source data is in <data/input/>"
+
+   ```text
+   Help me create import scripts for my DSP project. My JSON data model is in <project.json>
+   and my research data is in <data/input/>
    ```
 
 3. **Claude's Automated Workflow**
@@ -136,7 +135,7 @@ instructions that guide Claude through the entire import script development work
 
 ### Example Interaction
 
-```
+```text
 You: "Create import scripts for my project. Start with analyzing the data model."
 
 Claude: "I'll analyze your data model and create import scripts. Let me start by reading
@@ -185,13 +184,15 @@ Claude: "I've implemented the Person import script. Running validation now..."
 **Iterate incrementally:**
 
 - Claude validates each resource class before moving to the next
-- Fix any issues in your source data (not in the scripts)
+- When data quality issues appear, make sure Claude doesn't fix them in a wrong way. 
+  Instead, you should decide on how to handle them: either handle them in the code, 
+  or let the customers fix the data.
 - You can ask Claude to regenerate specific parts if needed
 
 **Manual intervention when needed:**
 
 - As a safety measure, Claude does not have the permission to change the source data
-- If the data must be changed this should be done separately
+- If the research data must be changed, this should be done manually by a human user
 - You can always ask Claude to adjust the import logic
 - Review and modify generated scripts as needed
 
