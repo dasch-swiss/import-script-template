@@ -184,7 +184,9 @@ Claude: "I've implemented the Person import script. Running validation now..."
 **Iterate incrementally:**
 
 - Claude validates each resource class before moving to the next
-- Avoid fixing data issues in the scripts - better fix them in the source data
+- When data quality issues appear, make sure Claude doesn't fix them in a wrong way. 
+  Instead, you should decide on how to handle them: either handle them in the code, 
+  or let the customers fix the data.
 - You can ask Claude to regenerate specific parts if needed
 
 **Manual intervention when needed:**
